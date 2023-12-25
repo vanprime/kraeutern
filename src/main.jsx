@@ -9,6 +9,8 @@ import "@fontsource/rubik"; // Defaults to weight 400
 import "@fontsource/rubik/600.css"
 import "@fontsource/rubik/800.css"
 import Games from "./pages/Games.jsx";
+import GameDetail from "./pages/GameDetail.jsx";
+import Navlayout from "./layouts/navlayout.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -23,7 +25,17 @@ const router = createBrowserRouter([
       },
       {
         path: "games",
-        element: <Games />,
+        element: <Navlayout />,
+        children: [
+          {
+            index: true, // This renders <Games /> content at the path '/games'
+            element: <Games />, // Assuming you have a component for the overview of games
+          },
+          {
+            path: ":gameSlug", // Nested route for individual games
+            element: <GameDetail />, // Component for game details
+          },
+        ]
       },
     ],
   },
