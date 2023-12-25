@@ -14,23 +14,22 @@ import { Link } from 'react-router-dom';
 
 const Games = () => {
     const { games } = useGames()
-    console.log(games)
     return (
-        <div className="gap-9 p-9">
+        <div className="flex w-full mb-auto justify-center flex-wrap p-9">
             {games.map(game => (
-                <Card key={game.slug} className="flex flex-col">
-                    <CardHeader>
-                        <CardTitle>{game.name}</CardTitle>
-                    </CardHeader>
-                    {game?.thumb && <CardContent className="flex-1">
-                        <img src={game.thumb} />
-                    </CardContent>}
-                    <CardFooter >
-                        <Button asChild className="w-full">
-                            <Link to={game.slug}>Play </Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
+                <div className="basis-56 p-4">
+                    <Card key={game.slug} className="flex flex-col w-full h-full">
+                        <CardHeader>
+                            <CardTitle>{game.name}</CardTitle>
+                            <CardDescription>{game.description}</CardDescription>
+                        </CardHeader>
+                        <CardFooter className="mt-auto" >
+                            <Button asChild className="w-full">
+                                <Link to={game.slug}>Play </Link>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </div>
             ))}
         </div>
     );

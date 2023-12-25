@@ -10,7 +10,7 @@ import "@fontsource/rubik/600.css"
 import "@fontsource/rubik/800.css"
 import Games from "./pages/Games.jsx";
 import GameDetail from "./pages/GameDetail.jsx";
-import Navlayout from "./layouts/navlayout.jsx";
+import Navlayout from "./layouts/Navlayout.jsx";
 import { GamesProvider } from "@/providers/games-provider.jsx";
 
 const baseUrl = '/kraeutern/'
