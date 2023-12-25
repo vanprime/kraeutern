@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { ThemeProvider } from '@/components/providers/theme-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 function App() {
 

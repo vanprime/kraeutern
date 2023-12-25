@@ -11,6 +11,7 @@ import "@fontsource/rubik/800.css"
 import Games from "./pages/Games.jsx";
 import GameDetail from "./pages/GameDetail.jsx";
 import Navlayout from "./layouts/navlayout.jsx";
+import { GamesProvider } from "@/providers/games-provider.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -43,7 +44,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} basename={baseUrl} />
+    <GamesProvider>
+      <RouterProvider router={router} basename={baseUrl} />
+    </GamesProvider>
     <Toaster />
   </React.StrictMode>
 );

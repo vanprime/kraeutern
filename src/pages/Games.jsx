@@ -1,16 +1,38 @@
-import Navigation from '@/components/Navigation';
+import { useGames } from '@/providers/games-provider';
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+
 
 const Games = () => {
+    const { games } = useGames()
+    console.log(games)
     return (
-        <>
-            <main className='flex flex-1 pb-6 px-6'>
-                <div className='flex flex-1 items-center bg-slate-800 rounded-3xl flex-col p-9'>
-                    Games
-                </div>
-            </main>
-        </>
+        <div className="gap-9 p-9">
+            {games.map(game => (
+                <Card key={game.slug} className="flex flex-col">
+                    <CardHeader>
+                        <CardTitle>{game.name}</CardTitle>
+                    </CardHeader>
+                    {game?.thumb && <CardContent className="flex-1">
+                        <img src={game.thumb} />
+                    </CardContent>}
+                    <CardFooter >
+                        <Button asChild className="w-full">
+                            <Link to={game.slug}>Play </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            ))}
+        </div>
     );
 };
 

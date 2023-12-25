@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { toast } from "sonner"
 
-const useGames = () => {
+// Initialize Supabase client
+const GamesContext = createContext(null);
+
+export const GamesProvider = ({ children }) => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -34,7 +36,11 @@ const useGames = () => {
         fetchGames();
     }, []);
 
-    return { games, loading, error };
+    return (
+        <GamesContext.Provider value={{ games, loading, error }}>
+            {children}
+        </GamesContext.Provider>
+    );
 };
 
-export default useGames
+export const useGames = () => useContext(GamesContext);

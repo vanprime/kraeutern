@@ -1,15 +1,17 @@
 import Navigation from '@/components/Navigation';
+
+import { useGames } from '@/providers/games-provider';
+import { Loader2 } from 'lucide-react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 const Navlayout = () => {
+    const { loading } = useGames();
     return (
         <>
             <Navigation />
             <main className='flex flex-1 pb-6 px-6'>
-                <div className='flex flex-1 items-center bg-slate-800 rounded-3xl flex-col p-9'>
-                    <Outlet />
-                </div>
+                {loading ? <Loader2 className='animate-spin m-auto' /> : <Outlet />}
             </main>
         </>
     );
