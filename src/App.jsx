@@ -1,15 +1,14 @@
 import { Outlet } from 'react-router-dom';
-import Navigation from '@/components/Navigation';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 function App() {
 
   return (
-    <div className='flex h-full flex-col'>
-      <Navigation />
-      <main className='flex-1 p-6'>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className='flex min-h-dvh flex-col'>
         <Outlet />
-      </main>
-    </div>
+      </div>
+    </ThemeProvider>
   )
 }
 
