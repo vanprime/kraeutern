@@ -54,6 +54,9 @@ module.exports = {
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        'grad': 'linear-gradient(0deg, #c9d6ff 0%, #e2e2e2 100%)',
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         heading: ["var(--font-heading)", ...fontFamily.sans],

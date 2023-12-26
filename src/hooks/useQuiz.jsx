@@ -13,6 +13,7 @@ const useQuiz = (game, pausePoints = []) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [quizStarted, setQuizStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
 
     const updateHash = (index) => {
@@ -41,6 +42,10 @@ const useQuiz = (game, pausePoints = []) => {
             setCurrentQuestionIndex(newIndex);
             updateHash(newIndex);
         }
+    };
+
+    const startQuiz = () => {
+        setQuizStarted(true);
     };
 
     const resumeQuiz = () => {
@@ -87,7 +92,19 @@ const useQuiz = (game, pausePoints = []) => {
         }
     }, [location.hash, questions]);
 
-    return { questions, currentQuestionIndex, goToNextQuestion, goToPreviousQuestion, showSolution, setShowSolution, loading, isPaused, resumeQuiz };
+    return {
+        questions,
+        currentQuestionIndex,
+        goToNextQuestion,
+        goToPreviousQuestion,
+        showSolution,
+        setShowSolution,
+        loading,
+        isPaused,
+        resumeQuiz,
+        quizStarted,
+        startQuiz
+    };
 };
 
 export default useQuiz;
