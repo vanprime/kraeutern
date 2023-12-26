@@ -16,7 +16,7 @@ export const Tile = ({ question, value, color, onAnswered, category }) => {
 
     if (question.answered) {
         return (
-            <div className={`flex items-center justify-center p-3 min-h-28 border-2 m-1.5 rounded bg-${color}-950 border-0 border-${color}-950 text-xl text-muted-foreground`}>
+            <div className={`flex items-center justify-center p-3 min-h-28 m-1.5 rounded border-0 text-xl text-muted-foreground`}>
                 {question.solution}
             </div>
         )
@@ -25,7 +25,7 @@ export const Tile = ({ question, value, color, onAnswered, category }) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className={`flex items-center justify-center p-3 min-h-28 border-2 m-1.5 rounded bg-${color}-800 shadow-lg border-${color}-900 hover:bg-yellow-200 transition-colors hover:text-primary-foreground cursor-pointer text-xl`}>
+                <button className={`jeopardy-tile flex items-center justify-center p-3 min-h-28 border-2 m-1.5 rounded  shadow-lg border-${color}-900 hover:bg-yellow-200 transition-colors hover:text-primary-foreground cursor-pointer text-xl`}>
                     <div>{value}</div>
                 </button>
             </AlertDialogTrigger>

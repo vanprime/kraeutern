@@ -1,0 +1,37 @@
+.jeopardy-row:first-of-type {
+    background-color: #0093E9;
+    background-image: linear-gradient(180deg, #0093E9 0%, #80D0C7 100%);
+
+    border-top-left-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
+}
+
+.jeopardy-row:first-of-type>*>.jeopardy-tile:not(:hover) {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.jeopardy-row:first-of-type>*>.jeopardy-tile {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.jeopardy-row:nth-of-type(2n) {
+    background-color: #8BC6EC;
+    background-image: linear-gradient(0deg, #8BC6EC 0%, #9599E2 100%);
+}
+
+.jeopardy-row:nth-of-type(3n) {
+    background-color: tomato;
+}
+
+.jeopardy-row:nth-of-type(4n) {
+    background-color: skyblue;
+}
+
+.jeopardy-row:last-of-type {
+    background-color: #FFDEE9;
+    background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+}

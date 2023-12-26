@@ -1,9 +1,10 @@
 import React from 'react';
 import { Tile } from './Tile';
+import "./jeopardy.css"
 
 const Row = ({ children, category, color }) => {
     return (
-        <div className={`flex flex-col justify-between p-3 bg-${color}-950 mt-auto h-full`}>
+        <div className="flex flex-col justify-between p-3 mt-auto h-full jeopardy-row">
             <div className='p-6 text-3xl font-semibold text-center'>{category}</div>
             <div className="flex flex-col content-center">
                 {children}
