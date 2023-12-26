@@ -84,33 +84,6 @@ module.exports = {
       },
     },
   },
-  purge: {
-    options: {
-      safelist: [
-        'border-transparent',
-        'bg-fuchsia-950',
-        'bg-sky-950',
-        'bg-teal-950',
-        'bg-violet-950',
-        'bg-yellow-950',
-        'bg-fuchsia-800',
-        'bg-sky-800',
-        'bg-teal-800',
-        'bg-violet-800',
-        'bg-yellow-800',
-        'border-fuchsia-900',
-        'border-sky-900',
-        'border-teal-900',
-        'border-violet-900',
-        'border-yellow-900',
-        'border-fuchsia-950',
-        'border-sky-950',
-        'border-teal-950',
-        'border-violet-950',
-        'border-yellow-950',
-      ],
-    },
-  },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 }
 
