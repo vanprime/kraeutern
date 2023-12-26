@@ -1,4 +1,5 @@
 import Jeopardy from '@/components/Jeopardy/Jeopardy';
+import Quiz from '@/components/Quiz/Quiz';
 import { useGames } from '@/providers/games-provider';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,6 +15,8 @@ function GameDetail() {
         switch (type) {
             case "jeopardy":
                 return (<Jeopardy game={game} />)
+            case "quiz":
+                return (<Quiz game={game} />)
             default:
                 return (<div>Game Board here</div>)
         }

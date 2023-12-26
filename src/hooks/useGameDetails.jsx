@@ -34,6 +34,7 @@ export const useGameDetails = (gameId) => {
             } else {
                 console.log("clearing game data")
                 setGameDetails({})
+                setLoading(false);
             }
         };
 

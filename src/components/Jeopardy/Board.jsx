@@ -2,7 +2,7 @@ import React from 'react';
 import { Tile } from './Tile';
 import "./jeopardy.css"
 
-const Row = ({ children, category, color }) => {
+const Row = ({ children, category }) => {
     return (
         <div className="flex flex-col justify-between p-3 mt-auto h-full jeopardy-row">
             <div className='p-6 text-3xl font-semibold text-center text-background tracking-wide'>
@@ -16,7 +16,7 @@ const Row = ({ children, category, color }) => {
 }
 
 const Board = ({ categories, onAnswered }) => {
-    if (!categories) return (<div>no cat</div>)
+    if (!categories) return (<div>no cats</div>)
 
     return (
         <div className='grid gap-0 grid-cols-5'>
