@@ -10,7 +10,7 @@ const Navlayout = () => {
     return (
         <>
             <Navigation />
-            <main className='flex flex-1 pb-6 px-6'>
+            <main className='flex flex-1 flex-col pb-6 px-6'>
                 {loading ? <Loader2 className='animate-spin m-auto' /> : <Outlet />}
             </main>
         </>

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import { toast } from 'sonner';
 
 // Initialize Supabase client
 const GamesContext = createContext(null);

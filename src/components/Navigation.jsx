@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useGames } from '@/providers/games-provider';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
@@ -10,6 +10,8 @@ import { Terminal } from 'lucide-react';
 const Navigation = () => {
 
     const { games, loading, error } = useGames();
+    let { gameSlug } = useParams(); // Access the dynamic part of the URL
+
     return (
         <nav className='px-4 py-2 flex flex-row items-center min-h-4'>
             <Button asChild variant='link' className='text-sm text-muted-foreground'>
@@ -47,6 +49,9 @@ const Navigation = () => {
                     </Link>
                 </Button>
             ))}
+            <Button variant="secondary" onClick={() => { localStorage.removeItem(gameSlug); window.location.reload(); }} className="ml-auto">
+                reset current game
+            </Button>
         </nav>
     );
 };

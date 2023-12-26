@@ -17,8 +17,8 @@ const Games = () => {
     return (
         <div className="flex w-full mb-auto justify-center flex-wrap p-9">
             {games.map(game => (
-                <div className="basis-56 p-4">
-                    <Card key={game.slug} className="flex flex-col w-full h-full">
+                <div key={game.slug} className="basis-56 p-4">
+                    <Card className="flex flex-col w-full h-full">
                         <CardHeader>
                             <CardTitle>{game.name}</CardTitle>
                             <CardDescription>{game.description}</CardDescription>
