@@ -10,17 +10,6 @@ import { RotateCcw, Terminal } from 'lucide-react';
 const Navigation = () => {
 
     const { games, loading, error } = useGames();
-    let { gameSlug } = useParams(); // Access the dynamic part of the URL
-
-    const resetGame = (slug) => {
-        localStorage.removeItem(slug);
-    }
-
-    const resetAllGames = () => {
-        games.forEach(game => {
-            localStorage.clear(game.slug);
-        });
-    }
 
     return (
         <nav className='px-4 py-2 flex flex-row items-center min-h-4'>
@@ -59,14 +48,6 @@ const Navigation = () => {
                     </Link>
                 </Button>
             ))}
-            <div className='ml-auto space-x-2'>
-                <Button variant="secondary" onClick={() => { resetAllGames() }} className="ml-auto">
-                    <RotateCcw className='mr-2' /> all
-                </Button>
-                <Button variant="secondary" onClick={() => { resetGame(gameSlug); }} className="ml-auto">
-                    <RotateCcw className='mr-2' /> current
-                </Button>
-            </div>
         </nav>
     );
 };

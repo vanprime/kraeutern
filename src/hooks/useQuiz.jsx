@@ -13,7 +13,6 @@ const useQuiz = (game, pausePoints = []) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [quizStarted, setQuizStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
 
     const saveGameState = () => {
@@ -21,7 +20,6 @@ const useQuiz = (game, pausePoints = []) => {
             questions,
             currentQuestionIndex,
             showSolution,
-            quizStarted,
             isPaused
         };
         localStorage.setItem(game.slug, JSON.stringify(gameState));
@@ -38,7 +36,6 @@ const useQuiz = (game, pausePoints = []) => {
             setQuestions(gameState.questions);
             setCurrentQuestionIndex(gameState.currentQuestionIndex);
             setShowSolution(false); //to prevent showing solution when restoring game
-            setQuizStarted(gameState.quizStarted);
             setIsPaused(gameState.isPaused);
             updateHash(gameState.currentQuestionIndex);
             setLoading(false);
@@ -50,7 +47,6 @@ const useQuiz = (game, pausePoints = []) => {
     // Function to reset state
     const resetState = () => {
         setShowSolution(false);
-        setQuizStarted(false);
         setIsPaused(false);
         setCurrentQuestionIndex(0);
     };
@@ -63,7 +59,7 @@ const useQuiz = (game, pausePoints = []) => {
 
     const goToNextQuestion = () => {
         setShowSolution(false);
-        if (currentQuestionIndex < questions.length - 1 && !isPaused && quizStarted) {
+        if (currentQuestionIndex < questions.length - 1 && !isPaused) {
             const newIndex = currentQuestionIndex + 1;
             setCurrentQuestionIndex(newIndex);
             updateHash(newIndex);
@@ -76,15 +72,11 @@ const useQuiz = (game, pausePoints = []) => {
 
     const goToPreviousQuestion = () => {
         setShowSolution(false);
-        if (currentQuestionIndex > 0 && !isPaused && quizStarted) {
+        if (currentQuestionIndex > 0 && !isPaused) {
             const newIndex = currentQuestionIndex - 1;
             setCurrentQuestionIndex(newIndex);
             updateHash(newIndex);
         }
-    };
-
-    const startQuiz = () => {
-        setQuizStarted(true);
     };
 
     const resumeQuiz = () => {
@@ -135,7 +127,7 @@ const useQuiz = (game, pausePoints = []) => {
         if (questions && currentQuestionIndex >= 0 && currentQuestionIndex < questions.length) {
             saveGameState();
         }
-    }, [questions, currentQuestionIndex, showSolution, quizStarted, isPaused]);
+    }, [questions, currentQuestionIndex, showSolution, isPaused]);
 
     return {
         questions,
@@ -147,8 +139,6 @@ const useQuiz = (game, pausePoints = []) => {
         loading,
         isPaused,
         resumeQuiz,
-        quizStarted,
-        startQuiz
     };
 };
 

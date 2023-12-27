@@ -18,8 +18,6 @@ const Quiz = ({ game }) => {
         loading,
         isPaused,
         resumeQuiz,
-        quizStarted,
-        startQuiz
     } = useQuiz(game, pausePoints);
 
     const toggleSolution = () => {
@@ -43,16 +41,6 @@ const Quiz = ({ game }) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [goToNextQuestion, goToPreviousQuestion, toggleSolution, currentQuestionIndex, isPaused]);
 
-    // Starting screen
-    if (!quizStarted) {
-        return (
-            <InterruptScreen
-                title={game.name}
-                description={game.description}
-                callback={startQuiz} />
-        );
-    }
-
     //pause screen
     if (isPaused) {
         return (
@@ -65,15 +53,14 @@ const Quiz = ({ game }) => {
     //loading screen
     if (loading) {
         return (
-            <InterruptScreen>
+            <div className='flex flex-1 justify-center items-center'>
                 <Loader2 className='animate-spin h-12 w-12' />
-            </InterruptScreen >
+            </div >
         )
     }
 
     return (
         <>
-
             {questions.length > 0 && (
                 <div className='flex flex-1 flex-col'>
                     <div className='py-9 px-16 grid grid-rows-2 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex-1 flex-col justify-center items-center overflow-y-scroll '>
