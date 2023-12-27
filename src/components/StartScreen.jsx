@@ -2,7 +2,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SpellingText from '@/components/SpellingText';
 
