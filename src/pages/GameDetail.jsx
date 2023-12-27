@@ -1,4 +1,5 @@
 import Jeopardy from '@/components/Jeopardy/Jeopardy';
+import Ppks from '@/components/PPKS/PPKS';
 import Quiz from '@/components/Quiz/Quiz';
 import { useGames } from '@/providers/games-provider';
 import React from 'react';
@@ -17,6 +18,8 @@ function GameDetail() {
                 return (<Jeopardy game={game} />)
             case "quiz":
                 return (<Quiz game={game} />)
+            case "ppks":
+                return (<Ppks game={game} />)
             default:
                 return (<div>Game Board here</div>)
         }

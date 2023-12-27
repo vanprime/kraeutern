@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Play } from 'lucide-react';
 
 
 const Games = () => {
@@ -25,7 +26,7 @@ const Games = () => {
                         </CardHeader>
                         <CardFooter className="mt-auto" >
                             <Button asChild className="w-full">
-                                <Link to={game.slug}>Play </Link>
+                                <Link to={game.slug}><Play /></Link>
                             </Button>
                         </CardFooter>
                     </Card>

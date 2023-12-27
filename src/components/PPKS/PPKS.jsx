@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { splitTextByChar } from '@/lib/textSplitters';
 import SplitWords from '../SplitWords';
+
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -15,8 +17,8 @@ const fadeInUp = {
 
 const InterruptScreen = ({ title, description, callback }) => {
     return (
-        <div className='flex flex-col p-9 my-auto bg-muted rounded-xl text-center mx-auto bg-gradient-to-b from-cyan-950 to-purple-950'>
-            <SplitWords word={title} className='font-semibold tracking-wide text-[8rem] text-slate-50 inline-block' />
+        <div className='flex flex-col p-9 my-auto bg-muted rounded-xl text-center mx-auto min-w-96 bg-gradient-to-b from-cyan-950 to-purple-950'>
+            <SplitWords word={title} className='font-semibold tracking-wider text-[5rem] text-slate-50' />
             <motion.div
                 variants={fadeInUp}
                 initial="initial"
@@ -33,9 +35,9 @@ const InterruptScreen = ({ title, description, callback }) => {
     )
 }
 
-const Quiz = ({ game }) => {
+const Ppks = ({ game }) => {
 
-    const pausePoints = [30]; // Define your pause points
+    const pausePoints = []; // Define your pause points
     const { questions,
         currentQuestionIndex,
         goToNextQuestion,
@@ -48,6 +50,18 @@ const Quiz = ({ game }) => {
         quizStarted,
         startQuiz
     } = useQuiz(game, pausePoints);
+
+    // Define your animation variants for each letter
+    const letterVariants = {
+        initial: { opacity: 0, y: 20 },
+        animate: i => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.05 // Delay each letter progressively
+            }
+        })
+    };
 
     const toggleSolution = () => {
         if (!isPaused) {
@@ -95,18 +109,33 @@ const Quiz = ({ game }) => {
             {loading && <div>Loading...</div>}
             {questions.length > 0 && (
                 <div className='flex flex-1 flex-col'>
-                    <div className='py-9 px-16 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex flex-1 flex-col justify-center items-center'>
-                        <SplitWords
-                            word={questions[currentQuestionIndex].question}
-                            className='font-semibold tracking-wide text-[3rem] text-indigo-950 text-center'
-                        />
+                    <div className='p-9 rounded bg-background grid grid-rows-2 flex-1 justify-center bg-gradient-to-b from-slate-900 to-slate-950 '>
+                        <div className='flex flex-1 justify-center items-center'>
+                            <motion.div
+                                key={questions[currentQuestionIndex].question}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                className='text-center'
+                            >
+                                {splitTextByChar(questions[currentQuestionIndex].question).map(({ char, index }) => (
+                                    <motion.span
+                                        key={index}
+                                        variants={letterVariants}
+                                        custom={index}
+                                        className='font-semibold tracking-wide text-[8rem] mx-2 text-indigo-950 inline-block'
+                                    >
+                                        {char}
+                                    </motion.span>
+                                ))}
+                            </motion.div>
+                        </div>
                         {showSolution && (
                             <div className="flex flex-col justify-center items-center">
-                                <SplitWords word={questions[currentQuestionIndex].solution} className='font-semibold tracking-wide text-[3rem] text-fuchsia-800' />
+                                <SplitWords word={questions[currentQuestionIndex].solution} className='font-semibold tracking-wide text-[3rem] text-slate-50 inline-block' />
                             </div>
-                        )
-                        }
-                    </div >
+                        )}
+                    </div>
                     <div className='pt-4 flex justify-between mt-auto'>
                         <Button
                             variant="secondary"
@@ -127,10 +156,10 @@ const Quiz = ({ game }) => {
                             <ArrowRight />
                         </Button>
                     </div>
-                </div >
+                </div>
             )}
         </ >
     );
 };
 
-export default Quiz;
+export default Ppks;
