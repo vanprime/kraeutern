@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useGames } from '@/providers/games-provider';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { Terminal } from 'lucide-react';
+import { RotateCcw, Terminal } from 'lucide-react';
 
 
 const Navigation = () => {
@@ -20,7 +20,6 @@ const Navigation = () => {
         games.forEach(game => {
             localStorage.clear(game.slug);
         });
-        window.location.reload();
     }
 
 
@@ -61,12 +60,14 @@ const Navigation = () => {
                     </Link>
                 </Button>
             ))}
-            <Button variant="secondary" onClick={() => { resetAllGames() }} className="ml-auto">
-                reset games
-            </Button>
-            <Button variant="secondary" onClick={() => { resetGame(gameSlug); }} className="ml-auto">
-                reset current game
-            </Button>
+            <div className='ml-auto space-x-2'>
+                <Button variant="secondary" onClick={() => { resetAllGames() }} className="ml-auto">
+                    <RotateCcw className='mr-2' /> all
+                </Button>
+                <Button variant="secondary" onClick={() => { resetGame(gameSlug); }} className="ml-auto">
+                    <RotateCcw className='mr-2' /> current
+                </Button>
+            </div>
         </nav>
     );
 };
