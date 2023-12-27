@@ -22,7 +22,6 @@ const Navigation = () => {
         });
     }
 
-
     return (
         <nav className='px-4 py-2 flex flex-row items-center min-h-4'>
             <Button asChild variant='link' className='text-sm text-muted-foreground'>

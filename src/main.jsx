@@ -29,12 +29,13 @@ const router = createBrowserRouter([
         element: <Navlayout />,
         children: [
           {
-            index: true, // This renders <Games /> content at the path '/games'
-            element: <Games />, // Assuming you have a component for the overview of games
+            index: true,
+            element: <Games />,
           },
           {
-            path: ":gameSlug", // Nested route for individual games
-            element: <GameDetail />, // Component for game details
+            // Fixed: Make this path relative to 'games'
+            path: ":gameSlug/*",
+            element: <GameDetail />,
           },
         ]
       },
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <GamesProvider>
-      <RouterProvider router={router} basename={baseUrl} />
+      <RouterProvider router={router} />
     </GamesProvider>
     <Toaster />
   </React.StrictMode>

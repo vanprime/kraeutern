@@ -31,8 +31,8 @@ const useQuiz = (game, pausePoints = []) => {
         let gameState = localStorage.getItem(game.slug);
         if (gameState) {
             gameState = JSON.parse(gameState);
-            toast("restored game data from local storage", {
-                description: `continue playing at round ${gameState.currentQuestionIndex + 1}`,
+            toast(`${game.name} savegame loaded`, {
+                description: `continuing at round ${gameState.currentQuestionIndex + 1}`,
                 position: "bottom-right",
             });
             setQuestions(gameState.questions);

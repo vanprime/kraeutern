@@ -1,35 +1,33 @@
-import Jeopardy from '@/components/Jeopardy/Jeopardy';
-import Ppks from '@/components/PPKS/PPKS';
-import Quiz from '@/components/Quiz/Quiz';
-import { useGames } from '@/providers/games-provider';
+// GameDetail.jsx
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useRoutes } from 'react-router-dom';
+import { useGames } from '@/providers/games-provider';
+import StartScreen from '@/components/StartScreen';
+import Jeopardy from '@/components/Jeopardy/Jeopardy';
+import Quiz from '@/components/Quiz/Quiz';
 
 function GameDetail() {
-    let { gameSlug } = useParams(); // Access the dynamic part of the URL
-    const { games } = useGames() // get games data from context
+    let { gameSlug } = useParams();
+    const { games } = useGames();
+    const game = games.find(game => game.slug === gameSlug);
 
-    const game = games.find(game => game.slug === gameSlug) // filter for current game
+    const gameRoutes = useRoutes([
+        { path: "/", element: <StartScreen game={game} /> },
+        { path: "play", element: renderGameboard(game) },
+    ]);
 
-    const renderGameboard = (type) => {
-        // whacky conditional render to
-        switch (type) {
-            case "jeopardy":
-                return (<Jeopardy game={game} />)
-            case "quiz":
-                return (<Quiz game={game} />)
-            case "ppks":
-                return (<Ppks game={game} />)
-            default:
-                return (<div>Game Board here</div>)
-        }
-    }
-
-    return (
-        <>
-            {renderGameboard(game.type)}
-        </>
-    );
+    return gameRoutes;
 }
+
+const renderGameboard = (game) => {
+    switch (game?.type) {
+        case "jeopardy":
+            return <Jeopardy game={game} />;
+        case "quiz":
+            return <Quiz game={game} />;
+        default:
+            return <div>Game Board here</div>;
+    }
+};
 
 export default GameDetail;
