@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { splitTextByChar } from '@/lib/textSplitters';
-import SplitWords from '../SplitWords';
+import SplitWords from '../SpellingText';
 
 
 const fadeInUp = {
@@ -18,7 +18,7 @@ const fadeInUp = {
 const InterruptScreen = ({ title, description, callback }) => {
     return (
         <div className='flex flex-col p-9 my-auto bg-muted rounded-xl text-center mx-auto min-w-96 bg-gradient-to-b from-cyan-950 to-purple-950'>
-            <SplitWords word={title} className='font-semibold tracking-wider text-[5rem] text-slate-50' />
+            <SpellingText text={title} className='font-semibold tracking-wider text-[5rem] text-slate-50' />
             <motion.div
                 variants={fadeInUp}
                 initial="initial"
@@ -132,7 +132,7 @@ const Ppks = ({ game }) => {
                         </div>
                         {showSolution && (
                             <div className="flex flex-col justify-center items-center">
-                                <SplitWords word={questions[currentQuestionIndex].solution} className='font-semibold tracking-wide text-[3rem] text-slate-50 inline-block' />
+                                <SpellingText text={questions[currentQuestionIndex].solution} className='font-semibold tracking-wide text-[3rem] text-slate-50 inline-block' />
                             </div>
                         )}
                     </div>

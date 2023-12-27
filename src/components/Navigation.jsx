@@ -12,6 +12,18 @@ const Navigation = () => {
     const { games, loading, error } = useGames();
     let { gameSlug } = useParams(); // Access the dynamic part of the URL
 
+    const resetGame = (slug) => {
+        localStorage.removeItem(slug);
+    }
+
+    const resetAllGames = () => {
+        games.forEach(game => {
+            localStorage.clear(game.slug);
+        });
+        window.location.reload();
+    }
+
+
     return (
         <nav className='px-4 py-2 flex flex-row items-center min-h-4'>
             <Button asChild variant='link' className='text-sm text-muted-foreground'>
@@ -19,7 +31,7 @@ const Navigation = () => {
                     className='text-sm text-muted-foreground'
                     to='/games'
                 >
-                    Home
+                    All Games
                 </Link>
             </Button>
             {loading && (
@@ -49,7 +61,10 @@ const Navigation = () => {
                     </Link>
                 </Button>
             ))}
-            <Button variant="secondary" onClick={() => { localStorage.removeItem(gameSlug); window.location.reload(); }} className="ml-auto">
+            <Button variant="secondary" onClick={() => { resetAllGames() }} className="ml-auto">
+                reset games
+            </Button>
+            <Button variant="secondary" onClick={() => { resetGame(gameSlug); }} className="ml-auto">
                 reset current game
             </Button>
         </nav>

@@ -5,9 +5,11 @@ const splitter = new GraphemeSplitter();
 
 // Function for splitting text into individual characters (including emojis)
 export const splitTextByChar = (text) => {
-    return splitter.splitGraphemes(text).map((char, index) => ({ char, index }));
+    return splitter.splitGraphemes(text).map((char, index) => ({
+        word: [{ char, charIndex: index }],
+        wordIndex: index
+    }));
 };
-
 // Function for splitting text into words and then into characters
 export const splitTextByWord = (text) => {
     return text.split(' ').map((word, wordIndex) => {
