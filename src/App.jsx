@@ -14,7 +14,8 @@ function App() {
     try {
       const { data, error } = await supabase
         .from('buzzer')
-        .insert([{ team_id: 0, timestamp: new Date().toISOString(), buzzed: false }]);
+        .update({ team_id: 0, buzzed: false }) // update these fields
+        .eq('id', 'e87d4fdb-d2f0-4166-b1f5-99843d64302b'); // where id equals this value
 
       if (error) {
         console.error('Error inserting buzzer press:', error);
@@ -45,7 +46,7 @@ function App() {
 
     // Realtime subscription using Supabase v2 channel
     const mySubscription = supabase.channel('buzzer')
-      .on('postgres_changes', { event: 'insert', schema: 'public', table: 'buzzer' }, payload => {
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public' }, payload => {
         console.log('Buzzer activated:', payload);
         if (payload.new.buzzed === true) {
           setTeamId(payload.new.team_id);
