@@ -6,6 +6,7 @@ import StartScreen from '@/components/StartScreen';
 import Jeopardy from '@/components/Jeopardy/Jeopardy';
 import Quiz from '@/components/Quiz/Quiz';
 import AudioQuiz from '@/components/Audio/AudioQuiz';
+import Slideshow from '@/components/Slideshow/Slideshow';
 
 function GameDetail() {
     let { gameSlug } = useParams();
@@ -28,6 +29,8 @@ const renderGameboard = (game) => {
             return <Quiz game={game} />;
         case "audio":
             return <AudioQuiz game={game} />;
+        case "slideshow":
+            return <Slideshow game={game} />;
         default:
             return <div>Game Board here</div>;
     }
