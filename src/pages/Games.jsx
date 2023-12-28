@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
-
 const Games = () => {
     const { games } = useGames()
     return (
