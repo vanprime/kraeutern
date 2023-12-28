@@ -28,7 +28,13 @@ const Buzzer = () => {
     return (
         <main className='flex flex-1 p-6'>
             <div className='flex flex-1 items-center justify-center bg-slate-950 rounded-3xl flex-col p-9'>
-                <Button className="bg-grad-buzzer text-[8rem] font-bold h-[5ch] w-[5ch] rounded-full" onClick={() => insertBuzzerPress(team_id)}>{team_id}</Button>
+                <div className="aspect-square w-[90%] select-none">
+                    <Button className="bg-grad-buzzer w-full h-full text-[4rem] font-bold rounded-full select-none"
+                        onClick={() => insertBuzzerPress(team_id)}
+                        onTouchStart={() => insertBuzzerPress(team_id)}
+                        onTouchEnd={() => insertBuzzerPress(team_id)}
+                    >{team_id}</Button>
+                </div>
             </div>
         </main>
     );

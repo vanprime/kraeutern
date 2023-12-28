@@ -42,12 +42,11 @@ function App() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown); 1
 
     // Realtime subscription using Supabase v2 channel
     const mySubscription = supabase.channel('buzzer')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public' }, payload => {
-        console.log('Buzzer activated:', payload);
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'buzzer' }, payload => {
         if (payload.new.buzzed === true) {
           setTeamId(payload.new.team_id);
           setOvershooterVisible(true);
