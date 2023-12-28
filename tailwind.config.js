@@ -56,6 +56,7 @@ module.exports = {
       },
       backgroundImage: {
         'grad': 'linear-gradient(0deg, #c9d6ff 0%, #e2e2e2 100%)',
+        'grad-buzzer': 'radial-gradient(circle, rgba(255,119,119,1) 0%, rgba(239,60,60,1) 58%, rgba(101,20,20,1) 100%);',
         'gradient-light-blue': 'linear-gradient(132deg, rgba(255,223,246,1) 0%, rgba(166,193,238,1) 58%, rgba(252,255,236,1) 100%);',
       },
       backgroundSize: {

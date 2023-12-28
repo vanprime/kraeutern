@@ -27,7 +27,7 @@ const Buzzer = () => {
     return (
         <main className='flex flex-1 p-6'>
             <div className='flex flex-1 items-center justify-center bg-slate-950 rounded-3xl flex-col p-9'>
-                <Button className="text-3xl" onClick={() => insertBuzzerPress(team_id)}> Buzzer for {team_id}</Button>
+                <Button className="bg-grad-buzzer text-[8rem] font-bold h-[5ch] w-[5ch] rounded-full" onClick={() => insertBuzzerPress(team_id)}>{team_id}</Button>
             </div>
         </main>
     );
