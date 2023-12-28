@@ -24,8 +24,6 @@ const Buzzer = () => {
         }
     };
 
-
-
     return (
         <main className='flex flex-1 p-6'>
             <div className='flex flex-1 items-center justify-center bg-slate-950 rounded-3xl flex-col p-9'>

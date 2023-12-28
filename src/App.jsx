@@ -9,10 +9,27 @@ function App() {
   const [overshooterVisible, setOvershooterVisible] = useState(false);
   const [teamId, setTeamId] = useState(null);
 
+  const insertBuzzerReset = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('buzzer')
+        .insert([{ team_id: 0, timestamp: new Date().toISOString(), buzzed: false }]);
+
+      if (error) {
+        console.error('Error inserting buzzer press:', error);
+        throw error;
+      }
+    } catch (err) {
+      // Handle any errors here
+      console.error('Error in insertBuzzerPress:', err);
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (overshooterVisible) {
         if (event.key === '0') {
+          insertBuzzerReset()
           setOvershooterVisible(false);
         }
       } else {
@@ -27,10 +44,12 @@ function App() {
 
     // Realtime subscription using Supabase v2 channel
     const mySubscription = supabase.channel('buzzer')
-      .on('postgres_changes', { event: '*', schema: 'public' }, payload => {
+      .on('postgres_changes', { event: 'insert', schema: 'public', table: 'buzzer' }, payload => {
         console.log('Buzzer activated:', payload);
-        setTeamId(payload.new.team_id); // Assuming 'teamId' is a field in your buzzer table
-        setOvershooterVisible(true);
+        if (payload.buzzed === true) {
+          setTeamId(payload.new.team_id);
+          setOvershooterVisible(true);
+        }
       })
       .subscribe();
 
@@ -44,11 +63,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Overshooter
         teamId={teamId}
-        isVisible={overshooterVisible}
-        close={() => {
-          setTeamId(null);
-          setOvershooterVisible(false);
-        }} />
+        isVisible={overshooterVisible} />
       <div className='flex min-h-dvh flex-col'>
         <Outlet />
       </div>
