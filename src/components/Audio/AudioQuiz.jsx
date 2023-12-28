@@ -1,9 +1,9 @@
 // AudioQuiz component
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { InterruptScreen } from './InterruptScreen';
+import { InterruptScreen } from '@/components/InterruptScreen';
 import useQuiz from '@/hooks/useQuiz';
 
 const AudioQuiz = ({ game }) => {
@@ -20,12 +20,22 @@ const AudioQuiz = ({ game }) => {
         resumeAudioQuiz,
     } = useQuiz(game, pausePoints);
 
+    const audioRef = useRef(new Audio());
+    const [audioSrc, setAudioSrc] = useState('');
+
+    useEffect(() => {
+        if (currentQuestionIndex >= 0 && questions.length > 0) {
+            setAudioSrc(questions[currentQuestionIndex].question);
+        }
+    }, [currentQuestionIndex, questions]);
+
     const toggleSolution = () => {
         if (!isPaused) {
             setShowSolution(!showSolution)
         }
     };
 
+    // Key handler
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'ArrowRight') {
@@ -41,6 +51,31 @@ const AudioQuiz = ({ game }) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [goToNextQuestion, goToPreviousQuestion, toggleSolution, currentQuestionIndex, isPaused]);
 
+    useEffect(() => {
+        const loadAudio = async () => {
+            const audioURL = questions[currentQuestionIndex].question;
+            const cacheName = 'audio-cache';
+            const cache = await caches.open(cacheName);
+            const cachedResponse = await cache.match(audioURL);
+
+            if (cachedResponse) {
+                audioRef.current.src = URL.createObjectURL(await cachedResponse.blob());
+            } else {
+                const response = await fetch(audioURL);
+                if (response.ok) {
+                    cache.put(audioURL, response.clone());
+                    audioRef.current.src = audioURL;
+                }
+            }
+            audioRef.current.load();
+        };
+
+        if (currentQuestionIndex >= 0 && questions.length > 0) {
+            loadAudio();
+        }
+    }, [currentQuestionIndex, questions]);
+
+
     //pause screen
     if (isPaused) {
         return (
@@ -48,14 +83,6 @@ const AudioQuiz = ({ game }) => {
                 title={'Pause!'}
                 description={'Kurz mal durchatmen, mit dem Button unten geht\'s weiter!'}
                 callback={resumeAudioQuiz} />
-        )
-    }
-    //loading screen
-    if (loading) {
-        return (
-            <div className='flex flex-1 justify-center items-center'>
-                <Loader2 className='animate-spin h-12 w-12' />
-            </div >
         )
     }
 
@@ -78,8 +105,10 @@ const AudioQuiz = ({ game }) => {
                                     {currentQuestionIndex + 1}
                                 </motion.p>
                             </div>
-                            <div className="flex flex-1 justify-center items-center">
-                                Media file playing here
+                            <div className="flex flex-1 flex-col justify-around p-9 items-center">
+                                <audio controls src={audioSrc}>
+                                    Your browser does not support the audio element.
+                                </audio>
                             </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">

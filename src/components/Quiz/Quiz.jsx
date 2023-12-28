@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { InterruptScreen } from './InterruptScreen';
+import { InterruptScreen } from '../InterruptScreen';
 
 const Quiz = ({ game }) => {
 

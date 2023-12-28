@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Play } from 'lucide-react';
 import { motion } from 'framer-motion';
-import SpellingText from '../SpellingText';
+import SpellingText from './SpellingText';
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },

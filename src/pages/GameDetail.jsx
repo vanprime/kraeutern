@@ -5,6 +5,7 @@ import { useGames } from '@/providers/games-provider';
 import StartScreen from '@/components/StartScreen';
 import Jeopardy from '@/components/Jeopardy/Jeopardy';
 import Quiz from '@/components/Quiz/Quiz';
+import AudioQuiz from '@/components/Audio/AudioQuiz';
 
 function GameDetail() {
     let { gameSlug } = useParams();
@@ -25,6 +26,8 @@ const renderGameboard = (game) => {
             return <Jeopardy game={game} />;
         case "quiz":
             return <Quiz game={game} />;
+        case "audio":
+            return <AudioQuiz game={game} />;
         default:
             return <div>Game Board here</div>;
     }
