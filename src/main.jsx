@@ -12,6 +12,9 @@ import Games from "./pages/Games.jsx";
 import GameDetail from "./pages/GameDetail.jsx";
 import Navlayout from "./layouts/Navlayout.jsx";
 import { GamesProvider } from "@/providers/games-provider.jsx";
+import Teamselect from "@/pages/Teamselect.jsx";
+import Buzzer from "@/pages/Buzzer.jsx";
+import Buzzerlayout from "@/layouts/Buzzerlayout.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -23,6 +26,20 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
+      },
+      {
+        path: "/buzzern",
+        element: <Buzzerlayout />,
+        children: [
+          {
+            index: true,
+            element: <Teamselect />,
+          },
+          {
+            path: ":team_id/*",
+            element: <Buzzer />,
+          },
+        ]
       },
       {
         path: "games",

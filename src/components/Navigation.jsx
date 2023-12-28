@@ -48,6 +48,12 @@ const Navigation = () => {
                     </Link>
                 </Button>
             ))}
+            <Link
+                className='ml-auto text-sm text-muted-foreground'
+                to='/buzzern'
+            >
+                Buzzern
+            </Link>
         </nav>
     );
 };

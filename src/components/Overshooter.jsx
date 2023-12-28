@@ -12,7 +12,7 @@ const Overshooter = ({ teamId, isVisible, close }) => {
 
     return (
         <div className="overshooter" onClick={close}>
-            <h1 className='text-primary absolute font-bold text-[7rem] drop-shadow-md1 -rotate-6'>Team {teamId}1</h1>
+            <h1 className='text-primary absolute font-bold text-[7rem] drop-shadow-md1 -rotate-6'>Team {teamId}</h1>
             <img src={teamImages[teamId - 1]} alt={`Team ${teamId} buzzed!`} />
         </div>
     );
