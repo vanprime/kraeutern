@@ -8,7 +8,7 @@ import { InterruptScreen } from '../InterruptScreen';
 
 const Quiz = ({ game }) => {
 
-    const pausePoints = [30]; // Define your pause points
+    const pausePoints = [20]; // Define your pause points
     const { questions,
         currentQuestionIndex,
         goToNextQuestion,

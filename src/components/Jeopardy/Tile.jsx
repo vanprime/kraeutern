@@ -32,7 +32,7 @@ export const Tile = ({ question, value, onAnswered, category }) => {
             <AlertDialogContent className="max-w-[80%] border-0">
                 <AlertDialogHeader>
                     <AlertDialogTitle className="text-3xl text-muted-foreground font-normal">{category} - {value}</AlertDialogTitle>
-                    <AlertDialogDescription className="text-[9rem] text-foreground font-semibold text-center">
+                    <AlertDialogDescription className="text-[3rem] text-foreground font-semibold text-center">
                         {question.question}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
