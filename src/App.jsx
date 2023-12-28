@@ -10,6 +10,7 @@ function App() {
   const [teamId, setTeamId] = useState(null);
 
   const insertBuzzerReset = async () => {
+    console.log('Inserting buzzer reset');
     try {
       const { data, error } = await supabase
         .from('buzzer')
@@ -27,12 +28,12 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (overshooterVisible) {
-        if (event.key === '0') {
-          insertBuzzerReset()
-          setOvershooterVisible(false);
-        }
-      } else {
+
+      if (event.key === '0') {
+        insertBuzzerReset();
+      }
+
+      if (!overshooterVisible) {
         if (event.key >= '1' && event.key <= '4') {
           setTeamId(event.key);
           setOvershooterVisible(true);
@@ -46,9 +47,11 @@ function App() {
     const mySubscription = supabase.channel('buzzer')
       .on('postgres_changes', { event: 'insert', schema: 'public', table: 'buzzer' }, payload => {
         console.log('Buzzer activated:', payload);
-        if (payload.buzzed === true) {
+        if (payload.new.buzzed === true) {
           setTeamId(payload.new.team_id);
           setOvershooterVisible(true);
+        } else {
+          setOvershooterVisible(false);
         }
       })
       .subscribe();
