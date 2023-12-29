@@ -4,9 +4,13 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { InterruptScreen } from '../InterruptScreen';
+import { InterruptScreen } from '@/components/InterruptScreen';
+import Overshooter from '@/components/Overshooter';
+import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const Quiz = ({ game }) => {
+
+    const { overshooterVisible, teamId } = useGamestateContext();
 
     const pausePoints = [26]; // Define your pause points
     const { questions,
@@ -61,6 +65,7 @@ const Quiz = ({ game }) => {
 
     return (
         <>
+            <Overshooter teamId={teamId} isVisible={overshooterVisible} />
             {questions.length > 0 && (
                 <div className='flex flex-1 flex-col'>
                     <div className='py-9 px-16 grid grid-rows-2 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex-1'>

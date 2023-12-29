@@ -11,7 +11,7 @@ const Overshooter = ({ teamId, isVisible }) => {
     const teamImages = [team1, team2, team3, team4];
 
     return (
-        <div className="overshooter">
+        <div className="overshooter backdrop-blur-xl">
             <h1 className='text-primary absolute font-bold text-[7rem] drop-shadow-md1 -rotate-6'>Team {teamId}</h1>
             <img src={teamImages[teamId - 1]} alt={`Team ${teamId} buzzed!`} />
         </div>

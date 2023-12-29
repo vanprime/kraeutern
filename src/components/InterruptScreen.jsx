@@ -9,7 +9,7 @@ const fadeInUp = {
     exit: { opacity: 0, y: -20 }
 };
 
-export const InterruptScreen = ({ children, title, description, callback }) => {
+export const InterruptScreen = ({ children, title = "", description, callback }) => {
     return (
         <div className='flex flex-col p-9 my-auto bg-muted rounded-xl text-center mx-auto bg-gradient-to-b from-cyan-950 to-purple-950 shadow-2xl shadow-purple-800 border-2 border-slate-50'>
             <SpellingText text={title} fontClasses='font-semibold tracking-wide text-[8rem] text-slate-50 inline-block' />

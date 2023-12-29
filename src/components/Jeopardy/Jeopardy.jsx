@@ -1,15 +1,41 @@
 import React from 'react';
-import Board from './Board';
 import useJeopardy from '@/hooks/useJeopardy';
+import Row from './components/Row';
+import { Tile } from './components/Tile';
+import "./jeopardy.css"
+import Overshooter from '@/components/Overshooter';
+import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const Jeopardy = ({ game }) => {
 
-    if (!game) return (<div>no game</div>)
-
+    const { overshooterVisible, teamId } = useGamestateContext();
     const { categories, markQuestionAsAnswered } = useJeopardy(game);
 
+    //TODO Make cols dynamic
     return (
-        <Board categories={categories} onAnswered={markQuestionAsAnswered} />
+        <>
+            <Overshooter teamId={teamId} isVisible={overshooterVisible} />
+            <div className={`grid gap-0 grid-cols-5`}>
+                {Object.entries(categories).map(([category, content]) => (
+                    <Row
+                        category={category}
+                        key={category}
+                    >
+                        {Object.values(content).map((questions) =>
+                            Object.entries(questions).map(([value, question]) => (
+                                <Tile
+                                    key={question.solution}
+                                    onAnswered={markQuestionAsAnswered}
+                                    question={question}
+                                    value={value}
+                                    category={category}
+                                />
+                            ))
+                        )}
+                    </Row>
+                ))}
+            </div>
+        </>
     );
 };
 

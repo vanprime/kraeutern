@@ -22,6 +22,8 @@ export const Tile = ({ question, value, onAnswered, category }) => {
         )
 
     }
+
+    //TODO: get rid of the alert dialog
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>

@@ -15,13 +15,14 @@ function GameDetail() {
 
     const gameRoutes = useRoutes([
         { path: "/", element: <StartScreen game={game} /> },
-        { path: "play", element: renderGameboard(game) },
+        { path: "play", element: <GameBoard game={game} /> },
     ]);
 
     return gameRoutes;
 }
 
-const renderGameboard = (game) => {
+const GameBoard = ({ game }) => {
+
     switch (game?.type) {
         case "jeopardy":
             return <Jeopardy game={game} />;
