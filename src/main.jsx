@@ -17,6 +17,7 @@ import Buzzer from "@/pages/Buzzer.jsx";
 import Buzzerlayout from "@/layouts/Buzzerlayout.jsx";
 import { GamestateProvider } from "./providers/gamestate-provider.jsx";
 import { ThemeProvider } from '@/providers/theme-provider';
+import NotFoundPage from "@/pages/NotFoundPage.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "",
+        index: true,
         element: <Home />,
       },
       {
@@ -52,12 +53,22 @@ const router = createBrowserRouter([
             element: <Games />,
           },
           {
-            // Fixed: Make this path relative to 'games'
             path: ":gameSlug/*",
             element: <GameDetail />,
           },
         ]
       },
+
+      {
+        path: "*",
+        element: <Navlayout />,
+        children: [
+          {
+            index: true,
+            element: <NotFoundPage />,
+          },
+        ]
+      }
     ],
   },
 ], { basename: baseUrl });

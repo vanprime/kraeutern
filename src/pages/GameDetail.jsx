@@ -9,9 +9,12 @@ import AudioQuiz from '@/components/Audio/AudioQuiz';
 import Slideshow from '@/components/Slideshow/Slideshow';
 
 function GameDetail() {
+
     let { gameSlug } = useParams();
     const { games } = useGames();
     const game = games.find(game => game.slug === gameSlug);
+
+    if (!game) return (<div>That game doesn't exist ... yet?</div>);
 
     const gameRoutes = useRoutes([
         { path: "/", element: <StartScreen game={game} /> },
