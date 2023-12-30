@@ -16,6 +16,7 @@ import Teamselect from "@/pages/Teamselect.jsx";
 import Buzzer from "@/pages/Buzzer.jsx";
 import Buzzerlayout from "@/layouts/Buzzerlayout.jsx";
 import { GamestateProvider } from "./providers/gamestate-provider.jsx";
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const baseUrl = '/kraeutern/'
 
@@ -63,11 +64,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <GamesProvider>
-      <GamestateProvider>
-        <RouterProvider router={router} />
-      </GamestateProvider>
-    </GamesProvider>
-    <Toaster />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <GamesProvider>
+        <GamestateProvider>
+          <RouterProvider router={router} />
+        </GamestateProvider>
+      </GamesProvider>
+      <Toaster />
+    </ThemeProvider>
   </React.StrictMode>
 );
