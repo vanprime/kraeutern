@@ -89,7 +89,7 @@ const Quiz = ({ game }) => {
                                     initial={{ x: '-1ch', opacity: 0, scale: 0.99, }}
                                     animate={{ x: 0, opacity: 1, scale: 1, }}
                                     transition={{ duration: 0.25 }}
-                                    className='font-semibold tracking-wide text-[3rem] text-indigo-950 text-center'>
+                                    className='font-semibold tracking-wide text-[3.8vw] leading-tight text-indigo-950 text-center'>
                                     {questions[currentQuestionIndex].question}
                                 </motion.p>
                             </div>

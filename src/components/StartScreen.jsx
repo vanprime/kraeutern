@@ -26,7 +26,7 @@ const StartScreen = ({ game }) => {
 
     return (
         <div className='flex flex-col p-9 my-auto bg-muted rounded-xl text-center mx-auto bg-gradient-to-b from-cyan-950 to-purple-950 shadow-2xl shadow-purple-800 border-2 border-slate-50'>
-            <SpellingText text={game.name} fontClasses='font-semibold tracking-wide text-[8rem] text-slate-50 inline-block' />
+            <SpellingText text={game.name} fontClasses='font-semibold tracking-wide text-[9vw] leading-tight text-slate-50 inline-block' />
             <motion.div
                 variants={fadeInUp}
                 initial="initial"
