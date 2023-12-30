@@ -58,13 +58,12 @@ const router = createBrowserRouter([
           },
         ]
       },
-
       {
         path: "*",
         element: <Navlayout />,
         children: [
           {
-            index: true,
+            path: "*",
             element: <NotFoundPage />,
           },
         ]
