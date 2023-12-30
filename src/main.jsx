@@ -18,6 +18,7 @@ import Buzzerlayout from "@/layouts/Buzzerlayout.jsx";
 import { GamestateProvider } from "./providers/gamestate-provider.jsx";
 import { ThemeProvider } from '@/providers/theme-provider';
 import NotFoundPage from "@/pages/NotFoundPage.jsx";
+import AuthPage from "@/pages/Auth.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -55,6 +56,16 @@ const router = createBrowserRouter([
           {
             path: ":gameSlug/*",
             element: <GameDetail />,
+          },
+        ]
+      },
+      {
+        path: "auth",
+        element: <Navlayout />,
+        children: [
+          {
+            index: true,
+            element: <AuthPage />,
           },
         ]
       },
