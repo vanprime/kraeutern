@@ -9,7 +9,9 @@ const Navlayout = () => {
     const { loading } = useGames();
     return (
         <>
-            <Navigation />
+            <div className='px-6 py-4 w-full'>
+                <Navigation />
+            </div>
             <main className='flex flex-1 flex-col pb-6 px-6'>
                 {loading ? <Loader2 className='animate-spin m-auto' /> : <Outlet />}
             </main>

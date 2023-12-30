@@ -1,10 +1,7 @@
 import * as React from "react"
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { useGames } from '@/providers/games-provider';
-import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { Terminal } from 'lucide-react';
 
 import { cn } from "@/lib/utils"
 import {
@@ -16,6 +13,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { Button } from "./ui/button";
 
 
 const Navigation = () => {
@@ -26,39 +24,43 @@ const Navigation = () => {
         <NavigationMenu>
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Games</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ListItem
-                            key={"overview"}
-                            title={"Games overview"}
-                            to='/games'
-                        >
-                            To all games
-                        </ListItem>
-                        {games.map(game => (
-                            <ListItem
-                                key={game.id}
-                                title={game.name}
-                                to={`/games/${game.slug}`}
-                            >
-                            </ListItem>
-                        ))}
-                        <ListItem
-                            key={"buzzers"}
-                            to='/buzzern'
-                        >
-                            Buzzern
-                        </ListItem>
-                        {error && (
-                            <Alert>
-                                <Terminal className="h-4 w-4" />
-                                <AlertTitle>Oops!</AlertTitle>
-                                <AlertDescription>
-                                    {error}
-                                </AlertDescription>
-                            </Alert>
+                    <Link to="/games">
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            All Games
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    {loading ?
+                        <div className="flex space-x-3">
+                            <Skeleton className="rounded-md h-4 w-[8ch] p-3" />
+                            <Skeleton className="rounded-md h-4 w-[8ch] p-3" />
+                            <Skeleton className="rounded-md h-4 w-[8ch] p-3" />
+                        </div>
+                        : (
+                            <>
+                                <NavigationMenuTrigger>Game</NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul className="grid gap-2 p-4 lg:grid-cols-[1fr] md:whitespace-nowrap">
+                                        {games.map(game => (
+                                            <ListItem
+                                                key={game.id}
+                                                title={game.name}
+                                                to={`/games/${game.slug}`}
+                                            >
+                                            </ListItem>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </>
                         )}
-                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link to="/buzzern" className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink>
+                            Buzzer
+                        </NavigationMenuLink>
+                    </Link>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
