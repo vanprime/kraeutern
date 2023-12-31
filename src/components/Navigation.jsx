@@ -13,11 +13,14 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { useAuthContext } from "@/providers/auth-provider";
 
 
 const Navigation = () => {
 
-    const { games, loading, error } = useGames();
+    const { games, loading } = useGames();
+
+    const session = useAuthContext();
 
     return (
         <NavigationMenu>
@@ -57,11 +60,14 @@ const Navigation = () => {
                         Buzzer
                     </ListItem>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <ListItem to="/auth" className={navigationMenuTriggerStyle()}>
-                        Auth
-                    </ListItem>
-                </NavigationMenuItem>
+                {session && (
+                    <NavigationMenuItem>
+                        <ListItem to="/auth" className={navigationMenuTriggerStyle()}>
+                            Auth
+                        </ListItem>
+                    </NavigationMenuItem>
+                )
+                }
             </NavigationMenuList>
         </NavigationMenu>
     );

@@ -1,0 +1,46 @@
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Im9RTnVkYkZNd3p5ZzBVb08iLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzA0MDQwNTYzLCJpYXQiOjE3MDQwMzY5NjMsImlzcyI6Imh0dHBzOi8vb3F1ZHJoZnl0cWl2YWtsZ2ZtZWwuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6ImJhMGZlZjY0LWU5OWUtNDkzZC04OGIyLTQ3NjM2MzY3ZDMxYSIsImVtYWlsIjoiZHVzdGlucHJlaWNrQGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnt9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im90cCIsInRpbWVzdGFtcCI6MTcwNDAzNjk2M31dLCJzZXNzaW9uX2lkIjoiM2QxZGIxYTItZTFlMy00YTU1LWIyZGQtZWIxNmU2NDI5NTQ2In0.IKRTD5eqIyV5ES_4JJ_88hTZVhSAMUflofvCv5IF5b4",
+    "expires_in": 3600,
+    "expires_at": 1704040563,
+    "refresh_token": "u2Osb4FNQ4VncYwF1sUBlQ",
+    "token_type": "bearer",
+    "user": {
+        "id": "ba0fef64-e99e-493d-88b2-47636367d31a",
+        "aud": "authenticated",
+        "role": "authenticated",
+        "email": "dustinpreick@gmail.com",
+        "email_confirmed_at": "2023-12-25T13:27:18.856516Z",
+        "phone": "",
+        "confirmation_sent_at": "2023-12-25T13:27:04.323708Z",
+        "confirmed_at": "2023-12-25T13:27:18.856516Z",
+        "recovery_sent_at": "2023-12-31T15:34:48.6033Z",
+        "last_sign_in_at": "2023-12-31T15:36:03.176876Z",
+        "app_metadata": {
+            "provider": "email",
+            "providers": [
+                "email"
+            ]
+        },
+        "user_metadata": {},
+        "identities": [
+            {
+                "identity_id": "304c7725-4c6a-43f8-9e8e-7de55910e27d",
+                "id": "ba0fef64-e99e-493d-88b2-47636367d31a",
+                "user_id": "ba0fef64-e99e-493d-88b2-47636367d31a",
+                "identity_data": {
+                    "email": "dustinpreick@gmail.com",
+                    "email_verified": false,
+                    "phone_verified": false,
+                    "sub": "ba0fef64-e99e-493d-88b2-47636367d31a"
+                },
+                "provider": "email",
+                "last_sign_in_at": "2023-12-25T13:27:04.320084Z",
+                "created_at": "2023-12-25T13:27:04.320141Z",
+                "updated_at": "2023-12-25T13:27:04.320141Z",
+                "email": "dustinpreick@gmail.com"
+            }
+        ],
+        "created_at": "2023-12-25T13:27:04.30885Z",
+        "updated_at": "2023-12-31T15:36:03.1808Z"
+    }
+}

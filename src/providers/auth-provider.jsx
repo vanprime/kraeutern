@@ -13,6 +13,11 @@ export const AuthProvider = ({ children }) => {
             try {
                 const { data } = await supabase.auth.getSession();
                 setSession(data.session);
+                if (data.session) {
+                    toast.success('Logged in successfully!', {
+                        description: `Hello ${data.user.email}!`,
+                    });
+                }
             } catch (error) {
                 console.error('Failed to get session:', error);
             }

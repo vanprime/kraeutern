@@ -41,5 +41,5 @@ export const useGameDetails = (gameId) => {
         fetchGameDetails();
     }, [gameId]);
 
-    return { gameDetails }
+    return { gameDetails, loading }
 }
