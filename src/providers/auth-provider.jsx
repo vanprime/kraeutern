@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
                     });
                 }
             } catch (error) {
+                setSession(null)
                 console.error('Failed to get session:', error);
             }
         };
