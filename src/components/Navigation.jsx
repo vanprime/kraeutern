@@ -13,7 +13,6 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Button } from "./ui/button";
 
 
 const Navigation = () => {
@@ -24,11 +23,9 @@ const Navigation = () => {
         <NavigationMenu>
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link to="/games">
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            All Games
-                        </NavigationMenuLink>
-                    </Link>
+                    <ListItem to="/games" className={navigationMenuTriggerStyle()}>
+                        All Games
+                    </ListItem>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     {loading ?
@@ -56,11 +53,14 @@ const Navigation = () => {
                         )}
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link to="/buzzern" className={navigationMenuTriggerStyle()}>
-                        <NavigationMenuLink>
-                            Buzzer
-                        </NavigationMenuLink>
-                    </Link>
+                    <ListItem to="/buzzern" className={navigationMenuTriggerStyle()}>
+                        Buzzer
+                    </ListItem>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <ListItem to="/auth" className={navigationMenuTriggerStyle()}>
+                        Auth
+                    </ListItem>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>

@@ -19,6 +19,7 @@ import { GamestateProvider } from "./providers/gamestate-provider.jsx";
 import { ThemeProvider } from '@/providers/theme-provider';
 import NotFoundPage from "@/pages/NotFoundPage.jsx";
 import AuthPage from "@/pages/Auth.jsx";
+import { AuthProvider } from "@/providers/auth-provider.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -86,12 +87,14 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <GamesProvider>
-        <GamestateProvider>
-          <RouterProvider router={router} />
-        </GamestateProvider>
-      </GamesProvider>
-      <Toaster />
+      <AuthProvider>
+        <GamesProvider>
+          <GamestateProvider>
+            <RouterProvider router={router} />
+          </GamestateProvider>
+        </GamesProvider>
+        <Toaster />
+      </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
