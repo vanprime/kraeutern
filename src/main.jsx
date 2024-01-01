@@ -20,6 +20,7 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import NotFoundPage from "@/pages/NotFoundPage.jsx";
 import AuthPage from "@/pages/Auth.jsx";
 import { AuthProvider } from "@/providers/auth-provider.jsx";
+import Host from "@/pages/Host.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -43,6 +44,16 @@ const router = createBrowserRouter([
           {
             path: ":team_id/*",
             element: <Buzzer />,
+          },
+        ]
+      },
+      {
+        path: "host",
+        element: <Navlayout />,
+        children: [
+          {
+            index: true,
+            element: <Host />,
           },
         ]
       },

@@ -22,6 +22,10 @@ const FormSchema = z.object({
         message: "Invalid email address.",
     }),
 });
+
+import { motion } from 'framer-motion';
+import { container, item } from "@/lib/animationProps"
+
 function Signup({ submitted, setSubmitted }) {
 
     const [submittedTo, setSubmittedTo] = useState(null)
@@ -46,14 +50,19 @@ function Signup({ submitted, setSubmitted }) {
     }
 
     if (submitted && submittedTo) {
+
         return (
-            <div className="grid gap-4">
-                <div className=" flex items-center text-2xl border-b-2">
+            <motion.div className="grid gap-2" variants={container} initial="hidden" animate="show">
+                <motion.div className="flex items-center text-2xl border-b-2" variants={item}>
                     <MailCheck className="mr-[1ch]" />
                     <h1> Success </h1>
-                </div>
-                <p className="text-slate-500">Check inbox and spam folder of {submittedTo} for an email from <i>Der Kanzler</i></p>
-            </div>
+                </motion.div>
+                <motion.div className="text-slate-500" variants={item}>
+                    <p>Check inbox and spam folder of <strong>{submittedTo}</strong> for an email from <em>Der Kanzler</em>.</p>
+                    <br />
+                    <p>Follow the Link to log in and create the Game. You can share the Game ID with your teams to have them buzzer.</p>
+                </motion.div>
+            </motion.div>
         )
     }
 
@@ -61,8 +70,10 @@ function Signup({ submitted, setSubmitted }) {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 w-full">
-                    <h1 className="text-2xl border-b-2">Kräutern.</h1>
-                    <p className="text-sm">Wenn du ein Spiel hosten willst, musst du dich einloggen. </p>
+                    <div>
+                        <h1 className="text-2xl border-b-2">Kräutern.</h1>
+                        <p className="text-sm">Wenn du ein Spiel hosten willst, musst du dich einloggen. </p>
+                    </div>
                     <FormField
                         control={form.control}
                         name="email"

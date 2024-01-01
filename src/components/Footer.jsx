@@ -14,14 +14,14 @@ function Footer() {
 
     return (
         <footer className="mx-6 my-4 border-t-2 text-slate-500">
-            <div className="w-full mx-auto py-4 px-6 md:flex md:items-center md:justify-between">
-                <span className="text-sm font-semibold  sm:text-center">
+            <div className="w-full py-4 md:flex md:items-center md:justify-between">
+                <span className="text-sm font-semibold">
                     Das Kräuterkoordinationskomitee.
                 </span>
-                <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-foreground-muted sm:mt-0">
+                <ul className="flex flex-wrap items-center text-sm font-medium text-foreground-muted space-x-2">
                     {footerLinks.map((link) => (
                         <li key={link.name}>
-                            <Link to={link.href} className="hover:underline me-4 md:me-6">{link.name}</Link>
+                            <Link to={link.href} className="hover:underline">{link.name}</Link>
                         </li>
                     ))}
                 </ul>

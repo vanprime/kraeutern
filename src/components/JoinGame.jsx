@@ -44,7 +44,9 @@ function JoinGame() {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 w-full">
-                    <h1 className="text-2xl border-b-2">Mitspielen</h1>
+                    <div>
+                        <h1 className="text-2xl border-b-2">Mitspielen</h1>
+                    </div>
                     <FormField
                         control={form.control}
                         name="gameId"
