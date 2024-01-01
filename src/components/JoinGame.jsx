@@ -24,7 +24,7 @@ const FormSchema = z.object({
 function JoinGame() {
 
     const navigate = useNavigate();
-    const { setGameId } = useGamestateContext()
+    const { gameRoom, setGameRoom } = useGamestateContext()
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -35,7 +35,7 @@ function JoinGame() {
     })
 
     async function onSubmit(data) {
-        setGameId(data.gameId)
+        setGameRoom({ ...gameRoom, gameRoom: data.gameId });
         toast("Joining Game",
             {
                 description: `Joining Game ${data.gameId}`

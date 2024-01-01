@@ -26,7 +26,7 @@ const FormSchema = z.object({
 import { motion } from 'framer-motion';
 import { container, item } from "@/lib/animationProps"
 
-function Signup({ submitted, setSubmitted }) {
+function Signup({ submitted, setSubmitted, setPageError }) {
 
     const [submittedTo, setSubmittedTo] = useState(null)
 
@@ -47,6 +47,7 @@ function Signup({ submitted, setSubmitted }) {
         )
         setSubmittedTo(data.email)
         setSubmitted(true)
+        setPageError(null);
     }
 
     if (submitted && submittedTo) {
