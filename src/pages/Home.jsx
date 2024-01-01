@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import Signup from '@/components/Signup';
 import { useAuthContext } from '@/providers/auth-provider';
 import { supabase } from '@/lib/supabaseClient';
+import JoinGame from '@/components/JoinGame';
 
 const Home = () => {
 
@@ -14,6 +15,7 @@ const Home = () => {
     const session = useAuthContext();
 
     const [pageError, setPageError] = useState(null);
+    const [submitted, setSubmitted] = useState(false)
 
     useEffect(() => {
         if (pageError) setPageError(null);
@@ -51,13 +53,14 @@ const Home = () => {
                         <img className='w-[600px] m-auto' src={Gamelogo} alt="Game logo" />
                     </div >
                     <div className="flex flex-1 justify-center items-center">
-                        <div className="p-6 rounded w-full">
-                            {session ? (
+                        <div className="grid gap-16 p-6 w-full">
+                            {session && (
                                 <Button onClick={() => handleLogout()}>
                                     Log out
                                 </Button>
-                            ) :
-                                <Signup />}
+                            )}
+                            {!session && <Signup submitted={submitted} setSubmitted={setSubmitted} />}
+                            {!submitted && <JoinGame />}
                         </div>
                     </div>
                 </div>

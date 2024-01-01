@@ -14,46 +14,29 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner";
-import { Crown, MailCheck } from "lucide-react"
+import { Crown } from "lucide-react"
 import { useState } from "react"
 
 const FormSchema = z.object({
-    email: z.string().email({
-        message: "Invalid email address.",
-    }),
+    gameId: z.string().min(3, 'Input is too short.').max(10, 'Input is too long.'),
 });
-function Signup({ submitted, setSubmitted }) {
 
-    const [submittedTo, setSubmittedTo] = useState(null)
+function JoinGame() {
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            email: "",
+            gameId: "",
         },
         mode: 'onChange',
-    });
+    })
 
     async function onSubmit(data) {
         console.log(data)
-        toast(`Email sent to ${data.email}`,
+        toast(`You want to join ${data.gameId}`,
             {
-                description: "Please check your inbox and spam folder."
+                description: "Joining Game ID"
             }
-        )
-        setSubmittedTo(data.email)
-        setSubmitted(true)
-    }
-
-    if (submitted && submittedTo) {
-        return (
-            <div className="grid gap-4">
-                <div className=" flex items-center text-2xl border-b-2">
-                    <MailCheck className="mr-[1ch]" />
-                    <h1> Success </h1>
-                </div>
-                <p className="text-slate-500">Check inbox and spam folder of {submittedTo} for an email from <i>Der Kanzler</i></p>
-            </div>
         )
     }
 
@@ -61,14 +44,13 @@ function Signup({ submitted, setSubmitted }) {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 w-full">
-                    <h1 className="text-2xl border-b-2">Kräutern.</h1>
-                    <p className="text-sm">Wenn du ein Spiel hosten willst, musst du dich einloggen. </p>
+                    <h1 className="text-2xl border-b-2">Mitspielen</h1>
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="gameId"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel>Game ID</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder=""
@@ -76,29 +58,29 @@ function Signup({ submitted, setSubmitted }) {
                                         onBlur={e => {
                                             field.onBlur(e);
                                             if (!e.target.value) {
-                                                form.clearErrors('email');
+                                                form.clearErrors('gameId');
                                             }
                                         }}
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Du bekommst einen Link. Es wird kein Account erstellt.
+                                    Gib die Game ID ein, um einem Spiel beizutreten.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-
                     <Button
-                        disabled={!form.formState.isValid}
-                        className=""
                         type="submit"
+                        variant="secondary"
+                        disabled={!form.formState.isValid}
                     >
-                        <Crown className="mr-2" />Spiel Hosten</Button>
+                        Join game
+                    </Button>
                 </form>
-            </Form >
+            </Form>
         </>
-    )
+    );
 }
 
-export default Signup
+export default JoinGame;
