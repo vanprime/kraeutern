@@ -19,7 +19,6 @@ export const useOvershooter = () => {
                 throw error;
             }
         } catch (err) {
-            // Handle any errors here
             console.error('Error in insertBuzzerPress:', err);
         }
     };

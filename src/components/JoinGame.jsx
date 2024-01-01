@@ -14,14 +14,17 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner";
-import { Crown } from "lucide-react"
-import { useState } from "react"
+import { useGamestateContext } from "@/providers/gamestate-provider"
+import { useNavigate } from "react-router-dom"
 
 const FormSchema = z.object({
     gameId: z.string().min(3, 'Input is too short.').max(10, 'Input is too long.'),
 });
 
 function JoinGame() {
+
+    const navigate = useNavigate();
+    const { setGameId } = useGamestateContext()
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -32,12 +35,13 @@ function JoinGame() {
     })
 
     async function onSubmit(data) {
-        console.log(data)
-        toast(`You want to join ${data.gameId}`,
+        setGameId(data.gameId)
+        toast("Joining Game",
             {
-                description: "Joining Game ID"
+                description: `Joining Game ${data.gameId}`
             }
         )
+        navigate(`/buzzern`);
     }
 
     return (

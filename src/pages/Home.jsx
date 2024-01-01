@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Gamelogo from '@/assets/gamelogo.png'
 import { Button } from '@/components/ui/button';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
 import Signup from '@/components/Signup';
@@ -9,6 +9,7 @@ import { useAuthContext } from '@/providers/auth-provider';
 import { supabase } from '@/lib/supabaseClient';
 import JoinGame from '@/components/JoinGame';
 import { LogOut } from 'lucide-react';
+import StartHosting from '@/components/StartHosting';
 
 const Home = () => {
 
@@ -42,10 +43,6 @@ const Home = () => {
         }
     }, [location.hash]);
 
-    async function handleLogout() {
-        const { error } = await supabase.auth.signOut()
-    }
-
     return (
         <>
             <main className="flex p-6 min-h-[100dvh]">
@@ -56,30 +53,7 @@ const Home = () => {
                     <div className="p-4 rounded-xl flex flex-col flex-1 border-2">
                         <div className="flex flex-col flex-1 justify-center items-center max-w-full md:max-w-96 md:mx-auto">
                             {session && (
-                                <div className='flex flex-1 flex-col h-full justify-between'>
-                                    <div className="grid gap-4 sm:my-4">
-                                        <h1 className='text-2xl border-b-2'>Hey!</h1>
-                                        <div className='text-slate-500'>
-                                            <p>Du bist mit $email eingeloggt.</p>
-                                            <p>Klicke auf den Button, um eine neue Runde zu starten. <br />
-                                                Deine Freunde können über deine Game ID an die entsprechenden buzzer kommen.</p>
-                                            <p>
-                                                Du kannst auch einem anderen Spiel beitreten, indem du unten die Game ID eingibst.
-                                            </p>
-                                        </div>
-                                        <Button className="w-full" asChild>
-                                            <Link to="/host">
-                                                Start hosting
-                                            </Link>
-                                        </Button>
-                                    </div>
-                                    <div className="my-4 md:my-0">
-                                        <JoinGame />
-                                    </div>
-                                    <Button className="mt-4 md:mt-0" variant="secondary" onClick={() => handleLogout()}>
-                                        <LogOut className='mr-[1ch]' />End session
-                                    </Button>
-                                </div>
+                                <StartHosting />
                             )}
                             <div className='grid gap-16 w-full'>
                                 {!session && (

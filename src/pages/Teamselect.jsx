@@ -1,8 +1,12 @@
 import { Button } from '@/components/ui/button';
+import { useGamestateContext } from '@/providers/gamestate-provider';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Teamselect = () => {
+
+    const { gameId } = useGamestateContext();
+
     return (
         <main className='flex flex-1 p-6'>
             <div className='flex flex-1 items-center bg-slate-900 rounded-3xl flex-col p-9'>
