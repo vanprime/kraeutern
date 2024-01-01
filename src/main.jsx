@@ -21,6 +21,7 @@ import NotFoundPage from "@/pages/NotFoundPage.jsx";
 import AuthPage from "@/pages/Auth.jsx";
 import { AuthProvider } from "@/providers/auth-provider.jsx";
 import Host from "@/pages/Host.jsx";
+import Blank from "@/pages/Blank.jsx";
 
 const baseUrl = '/kraeutern/'
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
           {
             path: ":team_id/*",
             element: <Buzzer />,
+          },
+          {
+            path: "blank",
+            element: <Blank />,
           },
         ]
       },

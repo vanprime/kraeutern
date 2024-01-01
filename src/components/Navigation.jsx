@@ -20,11 +20,16 @@ const Navigation = () => {
 
     const { games, loading } = useGames();
 
-    const session = useAuthContext();
+    const { session } = useAuthContext();
 
     return (
         <NavigationMenu>
             <NavigationMenuList>
+                <NavigationMenuItem>
+                    <ListItem to="/">
+                        Home
+                    </ListItem>
+                </NavigationMenuItem>
                 <NavigationMenuItem>
                     <ListItem to="/games" className={navigationMenuTriggerStyle()}>
                         All Games
@@ -75,8 +80,13 @@ const Navigation = () => {
                     </>
                 )
                 }
+                <NavigationMenuItem>
+                    <ListItem to="/buzzern/blank">
+                        Blank Buzzer Page
+                    </ListItem>
+                </NavigationMenuItem>
             </NavigationMenuList>
-        </NavigationMenu>
+        </NavigationMenu >
     );
 };
 

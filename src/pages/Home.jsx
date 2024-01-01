@@ -14,7 +14,7 @@ const Home = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const session = useAuthContext();
+    const { session } = useAuthContext();
 
     const [pageError, setPageError] = useState(null);
     const [submitted, setSubmitted] = useState(false)

@@ -3,7 +3,20 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 const Buzzerlayout = () => {
-    const { gameRoom } = useGamestateContext();
+    const { gameRoom, joinRoomId } = useGamestateContext();
+
+    if (joinRoomId) {
+        return (
+            <>
+                <div className="w-full text-center text-sm px-6 py-2 bg-purple-900">
+                    <p> Subscribed to Game ID: {joinRoomId}</p>
+                </div>
+                <main className='flex flex-1 flex-col pb-6'>
+                    <Outlet />
+                </main>
+            </>
+        )
+    }
 
     return (
         <>

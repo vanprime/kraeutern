@@ -3,22 +3,12 @@ import { Button } from "@/components/ui/button";
 import JoinGame from "@/components/JoinGame";
 import { ArrowBigRight, Loader2, LogOut, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/providers/auth-provider";
-import { supabase } from "@/lib/supabaseClient";
-import { toast } from "sonner";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 
 function StartHosting() {
-    const session = useAuthContext();
+    const { session, handleLogout } = useAuthContext();
 
     const { gameRoom, loading, handleCreateGameRoom, handleDeleteGameRoom } = useGamestateContext();
-
-    async function handleLogout() {
-        const { error } = await supabase.auth.signOut()
-        if (error) {
-            console.log(error)
-            toast.error(`Failed to log out`, { description: error.message });
-        }
-    }
 
     return (
         <div className='flex flex-1 flex-col h-full w-full justify-between'>

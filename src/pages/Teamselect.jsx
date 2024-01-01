@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import { Cctv } from 'lucide-react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Teamselect = () => {
@@ -20,6 +21,9 @@ const Teamselect = () => {
                     </Button>
                     <Button asChild className="m-9 flex p-9">
                         <Link className='text-xl font-semibold' to={'/buzzern/4'}>4</Link>
+                    </Button>
+                    <Button asChild variant="secondary" className="m-9 flex p-9">
+                        <Link className='text-xl font-semibold' to={'/buzzern/blank'}><Cctv /></Link>
                     </Button>
                 </div>
             </div>

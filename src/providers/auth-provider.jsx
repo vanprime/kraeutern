@@ -35,8 +35,16 @@ export const AuthProvider = ({ children }) => {
         return () => subscription.unsubscribe();
     }, []);
 
+    async function handleLogout() {
+        const { error } = await supabase.auth.signOut()
+        if (error) {
+            console.log(error)
+            toast.error(`Failed to log out`, { description: error.message });
+        }
+    }
+
     return (
-        <AuthContext.Provider value={session}>
+        <AuthContext.Provider value={{ session, handleLogout }}>
             {children}
         </AuthContext.Provider>
     );

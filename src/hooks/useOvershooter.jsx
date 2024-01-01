@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabaseClient';
 
 export const useOvershooter = (room_id) => {
     const [overshooterVisible, setOvershooterVisible] = useState(false);
-    const [teamId, setTeamId] = useState(null);
+    const [activeTeamId, setActiveTeamId] = useState(null);
 
-    const insertBuzzerReset = async () => {
-        console.log('Inserting buzzer reset');
+    const hideBuzzer = async () => {
+        console.log('Hiding buzzer');
         try {
             const { data, error } = await supabase
                 .from('gamestates')
@@ -24,15 +24,16 @@ export const useOvershooter = (room_id) => {
     };
 
     useEffect(() => {
+
         const handleKeyDown = (event) => {
 
-            if (event.key === '0' && overshooterVisible) {
-                insertBuzzerReset();
+            if (event.key === '0') {
+                hideBuzzer();
             }
 
             if (!overshooterVisible) {
                 if (event.key >= '1' && event.key <= '4') {
-                    setTeamId(event.key);
+                    setActiveTeamId(event.key);
                     setOvershooterVisible(true);
                 }
             }
@@ -43,9 +44,10 @@ export const useOvershooter = (room_id) => {
         // Realtime subscription using Supabase v2 channel
         const buzzerSubscription = supabase.channel('buzzer')
             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gamestates' }, payload => {
-                if (payload.new.buzzed === true) {
-                    setTeamId(payload.new.team_id);
+                if (payload.new.buzzed === true && payload.new.room_id === room_id) {
+                    setActiveTeamId(payload.new.team_id);
                     setOvershooterVisible(true);
+                    console.log("Buzzer registered with new team_id:", payload.new.team_id)
                 } else {
                     setOvershooterVisible(false);
                 }
@@ -56,7 +58,48 @@ export const useOvershooter = (room_id) => {
             window.removeEventListener('keydown', handleKeyDown);
             supabase.removeChannel(buzzerSubscription);
         };
-    }, [overshooterVisible]);
+    }, [overshooterVisible, room_id]);
 
-    return { overshooterVisible, setOvershooterVisible, teamId, insertBuzzerReset };
+    useEffect(() => {
+
+        if (!room_id) return;
+
+        //initialize buzzer state
+        async function getInitialBuzzerState() {
+
+            try {
+                const { data, error } = await supabase
+                    .from('gamestates')
+                    .select('buzzed')
+                    .eq('room_id', room_id)
+                    .single();
+
+                if (data) {
+                    setOvershooterVisible(data.buzzed)
+                }
+
+                if (error) {
+                    console.error('Error inserting buzzer press:', error);
+                    throw error;
+                }
+            } catch (err) {
+                console.error('Cant get initial buzzer state:', err);
+            }
+        }
+
+        getInitialBuzzerState();
+    },
+        [room_id])
+
+    // to implement a timeout for the overshooter, uncomment this:
+    /*     useEffect(() => {
+            if (overshooterVisible) {
+                const timer = setTimeout(() => {
+                    hideBuzzer();
+                }, 1500);
+                return () => clearTimeout(timer);
+            }
+        }, [overshooterVisible]); */
+
+    return { overshooterVisible, setOvershooterVisible, activeTeamId, hideBuzzer };
 };

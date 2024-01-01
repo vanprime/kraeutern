@@ -18,30 +18,31 @@ import { useGamestateContext } from "@/providers/gamestate-provider"
 import { useNavigate } from "react-router-dom"
 
 const FormSchema = z.object({
-    gameId: z.string().min(3, 'Input is too short.').max(10, 'Input is too long.'),
+    gameId: z.string().min(3, 'Input is too short.').max(37, 'Input is too long.'),
 });
 
 function JoinGame() {
 
     const navigate = useNavigate();
-    const { gameRoom, setGameRoom } = useGamestateContext()
+    const { handleManualJoinGameRoom } = useGamestateContext()
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             gameId: "",
         },
-        mode: 'onChange',
+        mode: 'onBlur',
     })
 
     async function onSubmit(data) {
-        setGameRoom({ ...gameRoom, room_id: data.gameId });
-        toast("Joining Game",
-            {
-                description: `Joining Game ${data.gameId}`
+        try {
+            const success = await handleManualJoinGameRoom(data.gameId);
+            if (success) {
+                toast("Joining Game", { description: `Joining Game ${data.gameId}` })
+                navigate(`/buzzern`);
             }
-        )
-        navigate(`/buzzern`);
+        } catch (error) {
+        }
     }
 
     return (

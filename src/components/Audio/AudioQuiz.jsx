@@ -10,7 +10,7 @@ import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const AudioQuiz = ({ game }) => {
 
-    const { overshooterVisible, teamId } = useGamestateContext()
+    const { overshooterVisible, activeTeamId } = useGamestateContext()
 
     const pausePoints = [30]; // Define your pause points
     const { questions,
@@ -92,7 +92,7 @@ const AudioQuiz = ({ game }) => {
 
     return (
         <>
-            <Overshooter teamId={teamId} isVisible={overshooterVisible} />
+            <Overshooter teamId={activeTeamId} isVisible={overshooterVisible} />
             {questions.length > 0 && (
                 <div className='flex flex-1 flex-col'>
                     <div className='py-9 px-16 grid grid-rows-2 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex-1'>

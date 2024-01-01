@@ -8,13 +8,13 @@ import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const Jeopardy = ({ game }) => {
 
-    const { overshooterVisible, teamId } = useGamestateContext();
+    const { overshooterVisible, activeTeamId } = useGamestateContext();
     const { categories, markQuestionAsAnswered } = useJeopardy(game);
 
     //TODO Make cols dynamic
     return (
         <>
-            <Overshooter teamId={teamId} isVisible={overshooterVisible} />
+            <Overshooter teamId={activeTeamId} isVisible={overshooterVisible} />
             <div className={`grid gap-0 grid-cols-5`}>
                 {Object.entries(categories).map(([category, content]) => (
                     <Row

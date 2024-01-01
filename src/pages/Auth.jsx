@@ -1,7 +1,7 @@
 import { useAuthContext } from "@/providers/auth-provider";
 
 function AuthPage() {
-    const session = useAuthContext();
+    const { session } = useAuthContext();
 
     if (!session) return null
 
