@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
-export const useOvershooter = () => {
+export const useOvershooter = (room_id) => {
     const [overshooterVisible, setOvershooterVisible] = useState(false);
     const [teamId, setTeamId] = useState(null);
 
@@ -10,9 +10,9 @@ export const useOvershooter = () => {
         console.log('Inserting buzzer reset');
         try {
             const { data, error } = await supabase
-                .from('buzzer')
-                .update({ team_id: 0, buzzed: false }) // update these fields
-                .eq('id', 'e87d4fdb-d2f0-4166-b1f5-99843d64302b'); // where id equals this value
+                .from('gamestates')
+                .update({ team_id: 0, buzzed: false })
+                .eq('room_id', room_id);
 
             if (error) {
                 console.error('Error inserting buzzer press:', error);
@@ -42,7 +42,7 @@ export const useOvershooter = () => {
 
         // Realtime subscription using Supabase v2 channel
         const buzzerSubscription = supabase.channel('buzzer')
-            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'buzzer' }, payload => {
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gamestates' }, payload => {
                 if (payload.new.buzzed === true) {
                     setTeamId(payload.new.team_id);
                     setOvershooterVisible(true);

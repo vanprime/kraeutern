@@ -1,77 +1,18 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import JoinGame from "@/components/JoinGame";
-import { LogOut } from "lucide-react";
+import { ArrowBigRight, LogOut, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/providers/auth-provider";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 import { useEffect, useState } from "react";
+import { useGameRoom } from "@/hooks/useGameRoom";
 
 function StartHosting() {
     const session = useAuthContext();
 
-    const [loading, setLoading] = useState(true);
-
-    const { gameRoom, setGameRoom } = useGamestateContext()
-
-    useEffect(() => {
-
-        if (gameRoom?.game_room) {
-            setLoading(false);
-            return
-        };
-
-        const fetchGameRoom = async () => {
-            setLoading(true);
-
-            try {
-                const { data, error } = await supabase
-                    .from('buzzer')
-                    .select('*')
-                    .eq('game_room', session.user.id)
-
-                if (error) {
-                    setGameRoom(null);
-                };
-                if (data.length === 0) {
-                    setGameRoom(null);
-                } else {
-                    setGameRoom(data[0]);
-                }
-
-            } catch (err) {
-                console.error('Error fetching game room:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchGameRoom();
-    }, []);
-
-    async function handleCreateGameRoom() {
-
-        try {
-            const { data, error } = await supabase
-                .from('buzzer')
-                .insert({ game_room: session.user.id, created_by: session.user.email })
-                .select('*');
-
-            if (error) {
-                console.error('Error creating game room:', error);
-                toast.error('Error creating game room', {
-                    description: error.message,
-                });
-            };
-            setGameRoom(data);
-        } catch (err) {
-            console.error('Error fetching game room:', err);
-        } finally {
-            setLoading(false);
-        }
-    }
-
+    const { gameRoom, loading, handleCreateGameRoom } = useGameRoom(session)
 
     async function handleLogout() {
         const { error } = await supabase.auth.signOut()
@@ -80,6 +21,7 @@ function StartHosting() {
             toast.error(`Failed to log out`, { description: error.message });
         }
     }
+
 
     return (
         <div className='flex flex-1 flex-col h-full w-full justify-between'>
@@ -103,9 +45,17 @@ function StartHosting() {
                             </div>
                         </>
                     )}
-                    {gameRoom?.game_room && (
+                    {gameRoom?.room_id && (
                         <div className="grid gap-4">
-                            <p>Deine Game ID ist: <br /> <span className="text-foreground">{gameRoom.game_room}</span></p>
+                            <p>Du hostest ein Game mit der ID: <br /> <span className="text-foreground">{gameRoom.room_id}</span></p>
+                            <Button className="w-full" asChild>
+                                <Link to="/host">
+                                    Zum Game Dashboard <ArrowBigRight className="ml-[1ch]" />
+                                </Link>
+                            </Button>
+                            <Button variant="destructive">
+                                Game löschen <Trash2 className="ml-[1ch]" />
+                            </Button>
                         </div>
                     )}
                 </div>

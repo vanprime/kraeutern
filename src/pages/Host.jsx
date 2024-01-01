@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useGameRoom } from "@/hooks/useGameRoom";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useGamestateContext } from "@/providers/gamestate-provider";
@@ -9,66 +10,7 @@ function Host() {
 
     const session = useAuthContext();
 
-    const [loading, setLoading] = useState(true);
-
-    const { gameRoom, setGameRoom } = useGamestateContext()
-
-    useEffect(() => {
-
-        if (gameRoom?.game_room) {
-            setLoading(false);
-            return
-        };
-
-        const fetchGameRoom = async () => {
-            setLoading(true);
-
-            try {
-                const { data, error } = await supabase
-                    .from('buzzer')
-                    .select('*')
-                    .eq('game_room', session.user.id)
-
-                if (error) {
-                    setGameRoom(null);
-                };
-                if (data.length === 0) {
-                    setGameRoom(null);
-                } else {
-                    setGameRoom(data[0]);
-                }
-
-            } catch (err) {
-                console.error('Error fetching game room:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchGameRoom();
-    }, []);
-
-    async function handleCreateGameRoom() {
-
-        try {
-            const { data, error } = await supabase
-                .from('buzzer')
-                .insert({ game_room: session.user.id, created_by: session.user.email })
-                .select('*');
-
-            if (error) {
-                console.error('Error creating game room:', error);
-                toast.error('Error creating game room', {
-                    description: error.message,
-                });
-            };
-            setGameRoom(data);
-        } catch (err) {
-            console.error('Error fetching game room:', err);
-        } finally {
-            setLoading(false);
-        }
-    }
+    const { loading, handleCreateGameRoom, gameRoom } = useGameRoom(session)
 
     return (
         <div className="p-6 grid gap-4">
@@ -82,7 +24,7 @@ function Host() {
             )}
             {gameRoom &&
                 <pre>
-                    <p>Your Game ID is: {gameRoom.game_room}</p>
+                    <p>Your Game ID is: {gameRoom.room_id}</p>
                     {JSON.stringify(gameRoom, null, 2)}
                 </pre>
             }

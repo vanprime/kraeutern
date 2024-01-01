@@ -3,16 +3,16 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 const Buzzerlayout = () => {
-    const { gameId } = useGamestateContext();
+    const { gameRoom } = useGamestateContext();
 
     return (
         <>
-            {gameId && (
+            {gameRoom && (
                 <div className="w-full text-center text-sm px-6 py-2 bg-green-900">
-                    <p> Subscribed to Game ID: {gameId}</p>
+                    <p> Subscribed to Game ID: {gameRoom.room_id}</p>
                 </div>
             )}
-            {!gameId && (
+            {!gameRoom && (
                 <div className="w-full text-center text-sm px-6 py-2 bg-destructive space-x-4">
                     <p className='inline-block'> No active game!</p> <Link to="/" className='inline-block hover:underline'> go back and join a game</Link>
                 </div>

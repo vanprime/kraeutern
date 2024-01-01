@@ -35,7 +35,7 @@ function JoinGame() {
     })
 
     async function onSubmit(data) {
-        setGameRoom({ ...gameRoom, gameRoom: data.gameId });
+        setGameRoom({ ...gameRoom, room_id: data.gameId });
         toast("Joining Game",
             {
                 description: `Joining Game ${data.gameId}`

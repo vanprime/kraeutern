@@ -5,12 +5,11 @@ import { useGamestateContext } from '@/providers/gamestate-provider';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-
 const Buzzer = () => {
 
     const { team_id } = useParams();
 
-    const { overshooterVisible, activeTeamId = team_id } = useGamestateContext()
+    const { overshooterVisible, activeTeamId = team_id, gameRoom } = useGamestateContext()
 
     const insertBuzzerPress = async (team_id) => {
 
@@ -18,9 +17,9 @@ const Buzzer = () => {
 
         try {
             const { data, error } = await supabase
-                .from('buzzer')
+                .from('gamestates')
                 .update({ team_id: team_id, buzzed: true }) // update these fields
-                .eq('id', 'e87d4fdb-d2f0-4166-b1f5-99843d64302b') // where id equals this value
+                .eq('room_id', gameRoom?.room_id)
 
             if (error) {
                 console.error('Error inserting buzzer press:', error);
