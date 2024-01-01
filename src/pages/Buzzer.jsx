@@ -9,27 +9,7 @@ const Buzzer = () => {
 
     const { team_id } = useParams();
 
-    const { overshooterVisible, activeTeamId = team_id, gameRoom } = useGamestateContext()
-
-    const insertBuzzerPress = async (team_id) => {
-
-        if (overshooterVisible) return;
-
-        try {
-            const { data, error } = await supabase
-                .from('gamestates')
-                .update({ team_id: team_id, buzzed: true }) // update these fields
-                .eq('room_id', gameRoom?.room_id)
-
-            if (error) {
-                console.error('Error inserting buzzer press:', error);
-                throw error;
-            }
-        } catch (err) {
-            // Handle any errors here
-            console.error('Error in insertBuzzerPress:', err);
-        }
-    };
+    const { overshooterVisible, activeTeamId = team_id, handleBuzzerPress } = useGamestateContext()
 
     return (
         <>
@@ -38,9 +18,9 @@ const Buzzer = () => {
                 <div className='flex flex-1 items-center justify-center bg-slate-950 rounded-3xl flex-col p-9'>
                     <div className="aspect-square w-[90%] select-none">
                         <Button className="bg-grad-buzzer w-full h-full text-[4rem] font-bold rounded-full select-none"
-                            onClick={() => insertBuzzerPress(team_id)}
-                            onTouchStart={() => insertBuzzerPress(team_id)}
-                            onTouchEnd={() => insertBuzzerPress(team_id)}
+                            onClick={() => handleBuzzerPress(team_id)}
+                            onTouchStart={() => handleBuzzerPress(team_id)}
+                            onTouchEnd={() => handleBuzzerPress(team_id)}
                         >{team_id}</Button>
                     </div>
                 </div>

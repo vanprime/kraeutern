@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import JoinGame from "@/components/JoinGame";
-import { ArrowBigRight, LogOut, Trash2 } from "lucide-react";
+import { ArrowBigRight, Loader2, LogOut, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/providers/auth-provider";
 import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { useGamestateContext } from "@/providers/gamestate-provider";
-import { useEffect, useState } from "react";
-import { useGameRoom } from "@/hooks/useGameRoom";
 
 function StartHosting() {
     const session = useAuthContext();
 
-    const { gameRoom, loading, handleCreateGameRoom } = useGameRoom(session)
+    const { gameRoom, loading, handleCreateGameRoom, handleDeleteGameRoom } = useGamestateContext();
 
     async function handleLogout() {
         const { error } = await supabase.auth.signOut()
@@ -21,7 +19,6 @@ function StartHosting() {
             toast.error(`Failed to log out`, { description: error.message });
         }
     }
-
 
     return (
         <div className='flex flex-1 flex-col h-full w-full justify-between'>
@@ -39,7 +36,7 @@ function StartHosting() {
                                 </p>
                             </div>
                             <div className="mt-2">
-                                <Button className="w-full" onClick={() => handleCreateGameRoom()}>
+                                <Button className="w-full" disabled={loading} onClick={handleCreateGameRoom}>
                                     Start hosting
                                 </Button>
                             </div>
@@ -53,7 +50,7 @@ function StartHosting() {
                                     Zum Game Dashboard <ArrowBigRight className="ml-[1ch]" />
                                 </Link>
                             </Button>
-                            <Button variant="destructive">
+                            <Button variant="destructive" disabled={loading} onClick={handleDeleteGameRoom}>
                                 Game löschen <Trash2 className="ml-[1ch]" />
                             </Button>
                         </div>

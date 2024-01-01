@@ -26,7 +26,7 @@ export const useOvershooter = (room_id) => {
     useEffect(() => {
         const handleKeyDown = (event) => {
 
-            if (event.key === '0') {
+            if (event.key === '0' && overshooterVisible) {
                 insertBuzzerReset();
             }
 

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useGameRoom } from "@/hooks/useGameRoom";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useGamestateContext } from "@/providers/gamestate-provider";
@@ -10,7 +9,7 @@ function Host() {
 
     const session = useAuthContext();
 
-    const { loading, handleCreateGameRoom, gameRoom } = useGameRoom(session)
+    const { loading, handleCreateGameRoom, gameRoom } = useGamestateContext();
 
     return (
         <div className="p-6 grid gap-4">
