@@ -61,7 +61,7 @@ const Home = () => {
                                         <Signup submitted={submitted} setSubmitted={setSubmitted} />
                                     </div>
                                 )}
-                                {!submitted && (
+                                {!submitted || session && (
                                     <div className='flex-1 w-full'>
                                         <JoinGame />
                                     </div>

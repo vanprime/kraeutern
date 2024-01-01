@@ -6,9 +6,11 @@ function AuthPage() {
     if (!session) return null
 
     return (
-        <div className='flex flex-col p-6 m-auto min-w-72 max-w-full bg-muted rounded-xl text-center'>
+        <div className='flex flex-col p-6 m-auto min-w-72 max-w-full bg-muted rounded-xl'>
             <h1> Auth Page here </h1 >
-            {session && (JSON.stringify(session))}
+            {session && <pre>
+                {JSON.stringify(session, null, 2)}
+            </pre>}
         </div>
     );
 }

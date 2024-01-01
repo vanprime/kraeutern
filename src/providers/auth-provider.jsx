@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
                 setSession(data.session);
                 if (data.session) {
                     toast.success('Logged in successfully!', {
-                        description: `Hello ${data.user.email}!`,
+                        description: `Hello ${data.session.user.email}!`,
                     });
                 }
             } catch (error) {
