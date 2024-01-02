@@ -8,7 +8,7 @@ import JoinGame from "./JoinGame";
 import { container } from "@/lib/animationProps";
 import { motion } from 'framer-motion';
 
-function StartHosting() {
+function StartHosting({ hideupperPart = false }) {
     const { session, handleLogout } = useAuthContext();
 
     const { gameRoom, loading, handleCreateGameRoom, handleDeleteGameRoom } = useGamestateContext();
@@ -20,7 +20,7 @@ function StartHosting() {
             initial="hidden"
             animate="show"
         >
-            <p className="text-slate-500 ">Du bist mit <span className="text-foreground">{session?.user?.email}</span> eingeloggt.</p>
+            {!hideupperPart && <p className="text-slate-500 ">Du bist mit <span className="text-foreground">{session?.user?.email}</span> eingeloggt.</p>}
             {!gameRoom && (
                 <>
                     <p className="text-slate-500">Klicke auf den Button, um eine neue Runde zu starten.</p>
@@ -34,14 +34,16 @@ function StartHosting() {
             )}
             {gameRoom?.room_id && (
                 <>
-                    <div className="grid gap-4">
-                        <p className="text-slate-500 ">Du hostest ein Game mit der ID: <br /> <span className="text-foreground">{gameRoom.room_id}</span></p>
-                        <Button className="w-full" asChild>
-                            <Link to="/host">
-                                Zum Game Dashboard <ArrowBigRight className="ml-[1ch]" />
-                            </Link>
-                        </Button>
-                    </div>
+                    {!hideupperPart && (
+                        <div className="grid gap-4">
+                            <p className="text-slate-500 ">Du hostest ein Game mit der ID: <br /> <span className="text-foreground">{gameRoom.room_id}</span></p>
+                            <Button className="w-full" asChild>
+                                <Link to="/host">
+                                    Zum Game Dashboard <ArrowBigRight className="ml-[1ch]" />
+                                </Link>
+                            </Button>
+                        </div>
+                    )}
                     <GameIdQrCode />
                     <Button variant="destructive" disabled={loading} onClick={handleDeleteGameRoom}>
                         Game löschen <Trash2 className="ml-[1ch]" />

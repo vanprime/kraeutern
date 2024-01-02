@@ -32,10 +32,6 @@ const GameIdQrCode = () => {
 
     return (
         <div className="grid h-full gap-4">
-            <Button
-                variant="secondary"
-                onClick={() => copyToClipboard()}
-            > Copy invite Link <ClipboardCopy className="ml-[1ch]" /></Button>
             <div className="flex flex-1 aspect-square rounded">
                 <QRCode
                     bgColor="transparent"
@@ -44,6 +40,10 @@ const GameIdQrCode = () => {
                     style={{ height: "auto", maxWidth: "100%", width: "100%", borderRadius: "0.25rem" }}
                     value={url.toString()} />
             </div>
+            <Button
+                variant="secondary"
+                onClick={() => copyToClipboard()}
+            > Copy invite Link <ClipboardCopy className="ml-[1ch]" /></Button>
         </div>
     );
 };

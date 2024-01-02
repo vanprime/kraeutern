@@ -8,7 +8,7 @@ import Home from "@/pages/Home.jsx";
 import "@fontsource/rubik"; // Defaults to weight 400
 import "@fontsource/rubik/600.css"
 import "@fontsource/rubik/800.css"
-import Games from "./pages/Games.jsx";
+import GamesList from "./components/GamesList.jsx";
 import GameDetail from "./pages/GameDetail.jsx";
 import Navlayout from "./layouts/Navlayout.jsx";
 import { GamesProvider } from "@/providers/games-provider.jsx";
@@ -73,10 +73,6 @@ const router = createBrowserRouter([
         path: "games",
         element: <Navlayout />,
         children: [
-          {
-            index: true,
-            element: <Games />,
-          },
           {
             path: ":gameSlug/*",
             element: <GameDetail />,

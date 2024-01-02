@@ -14,10 +14,6 @@ const Navigation = () => {
             href: "/host",
         },
         {
-            name: "All Games",
-            href: "/games",
-        },
-        {
             name: "Join a Team",
             href: "/buzzern",
         },
@@ -31,6 +27,7 @@ const Navigation = () => {
         <nav className="mx-6 py-4 border-b-2 space-x-4 whitespace-nowrap flex flex-wrap">
             {navLinks.map(link => (
                 <Link
+                    key={link.href}
                     to={link.href}
                     className="hover:underline"
                 >

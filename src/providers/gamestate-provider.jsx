@@ -136,7 +136,7 @@ export const GamestateProvider = ({ children }) => {
             try {
                 const { data, error } = await supabase
                     .from('gamestates')
-                    .select('*')
+                    .select('amount_buzzered, created_at, created_by, room_id, updated_at')
                     .eq('creator_id', session.user.id)
 
                 if (error) {

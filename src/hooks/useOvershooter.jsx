@@ -42,7 +42,8 @@ export const useOvershooter = (room_id) => {
         window.addEventListener('keydown', handleKeyDown); 1
 
         // Realtime subscription using Supabase v2 channel
-        const buzzerSubscription = supabase.channel('buzzer')
+        // TODO Remove from overshooter to subscribe the whole app
+        const gameStateSubscription = supabase.channel('buzzer')
             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gamestates' }, payload => {
                 if (payload.new.buzzed === true && payload.new.room_id === room_id) {
                     setActiveTeamId(payload.new.team_id);
@@ -56,7 +57,7 @@ export const useOvershooter = (room_id) => {
 
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-            supabase.removeChannel(buzzerSubscription);
+            supabase.removeChannel(gameStateSubscription);
         };
     }, [overshooterVisible, room_id]);
 
