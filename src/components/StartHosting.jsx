@@ -5,6 +5,8 @@ import { useAuthContext } from "@/providers/auth-provider";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 import GameIdQrCode from "@/components/QRCode";
 import JoinGame from "./JoinGame";
+import { container } from "@/lib/animationProps";
+import { motion } from 'framer-motion';
 
 function StartHosting() {
     const { session, handleLogout } = useAuthContext();
@@ -12,7 +14,12 @@ function StartHosting() {
     const { gameRoom, loading, handleCreateGameRoom, handleDeleteGameRoom } = useGamestateContext();
 
     return (
-        <div className='grid gap-4 my-4 md:my-auto w-full'>
+        <motion.div
+            className='grid gap-4 my-4 md:my-auto w-full'
+            variants={container}
+            initial="hidden"
+            animate="show"
+        >
             <p className="text-slate-500 ">Du bist mit <span className="text-foreground">{session?.user?.email}</span> eingeloggt.</p>
             {!gameRoom && (
                 <>
@@ -44,7 +51,7 @@ function StartHosting() {
             <Button className="" variant="secondary" onClick={() => handleLogout()}>
                 Log out <LogOut className='ml-[1ch]' />
             </Button>
-        </div>
+        </motion.div>
     );
 }
 

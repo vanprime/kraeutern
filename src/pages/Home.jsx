@@ -1,11 +1,12 @@
 import { useState } from 'react';
-
+import { motion } from 'framer-motion';
 import Signup from '@/components/Signup';
 import { useAuthContext } from '@/providers/auth-provider';
 import JoinGame from '@/components/JoinGame';
 import StartHosting from '@/components/StartHosting';
 import usePageError from '@/hooks/usePageError';
 import useInvitation from '@/hooks/useInvitation';
+import { container, item } from '@/lib/animationProps';
 
 const Home = () => {
 
@@ -28,14 +29,24 @@ const Home = () => {
                 <StartHosting />
             )}
             {!session && (
-                <div className='grid gap-16 w-full'>
-                    <div className='flex-1 w-full'>
+                <motion.div
+                    variants={container}
+                    initial="hidden"
+                    animate="show"
+                    className='grid gap-16 w-full'>
+                    <motion.div
+                        variants={item}
+                        className='flex-1 w-full'
+                    >
                         <Signup submitted={submitted} setSubmitted={setSubmitted} setPageError={setPageError} />
-                    </div>
-                    <div className='flex-1 w-full'>
+                    </motion.div>
+                    <motion.div
+                        variants={item}
+                        className='flex-1 w-full'
+                    >
                         <JoinGame />
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             )}
         </div>
     );
