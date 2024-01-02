@@ -43,7 +43,7 @@ const GameIdQrCode = () => {
             <Button
                 variant="secondary"
                 onClick={() => copyToClipboard()}
-            > Copy invite Link <ClipboardCopy className="ml-[1ch]" /></Button>
+            > Copy Link to clipboard <ClipboardCopy className="ml-[1ch]" /></Button>
         </div>
     );
 };

@@ -122,6 +122,7 @@ export const GamestateProvider = ({ children }) => {
                 throw new Error('No game found with this ID');
             }
         } catch (err) {
+            console.error(err);
             throw err;
         } finally {
             setLoading(false);

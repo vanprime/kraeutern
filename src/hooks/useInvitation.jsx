@@ -23,6 +23,10 @@ const useInvitation = () => {
                 return
             }
         } catch (error) {
+            console.error('Error joining game room:', error);
+            // Remove the invite parameter from the URL
+            params.delete('invite');
+            navigate(location.pathname, { replace: true });
         }
     }
 
