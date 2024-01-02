@@ -23,7 +23,7 @@ import { AuthProvider } from "@/providers/auth-provider.jsx";
 import Host from "@/pages/Host.jsx";
 import Blank from "@/pages/Blank.jsx";
 
-const baseUrl = '/kraeutern/'
+export const baseUrl = '/kraeutern/'
 
 const router = createBrowserRouter([
   {

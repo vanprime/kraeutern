@@ -62,18 +62,16 @@ const Home = () => {
                             {session && (
                                 <StartHosting />
                             )}
-                            <div className='grid gap-16 w-full'>
-                                {!session && (
+                            {!session && (
+                                <div className='grid gap-16 w-full'>
                                     <div className='flex-1 w-full'>
                                         <Signup submitted={submitted} setSubmitted={setSubmitted} setPageError={setPageError} />
                                     </div>
-                                )}
-                                {!submitted && !session && (
                                     <div className='flex-1 w-full'>
                                         <JoinGame setPageError={setPageError} />
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
