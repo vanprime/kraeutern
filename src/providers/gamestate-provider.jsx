@@ -134,7 +134,7 @@ export const GamestateProvider = ({ children }) => {
             const { data, error } = await supabase
                 .from('gamestates')
                 .select('buzzed, team_id')
-                .eq('room_id', room_id)
+                .eq('room_id', joinRoomId ? joinRoomId : gameRoom?.room_id)
                 .single();
 
             if (data) {
@@ -253,8 +253,8 @@ export const GamestateProvider = ({ children }) => {
     }, [session]);
 
     useEffect(() => {
-        if (joinRoomId) {
-            return
+        if (joinRoomId && !session) {
+            fetchBuzzerState();
         }
         if (session) {
             fetchGameRoom();
