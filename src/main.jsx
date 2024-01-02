@@ -22,6 +22,7 @@ import AuthPage from "@/pages/Auth.jsx";
 import { AuthProvider } from "@/providers/auth-provider.jsx";
 import Host from "@/pages/Host.jsx";
 import Blank from "@/pages/Blank.jsx";
+import Homelayout from "@/layouts/Homelayout.jsx";
 
 export const baseUrl = '/kraeutern/'
 
@@ -31,8 +32,14 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
-        element: <Home />,
+        path: "/",
+        element: <Homelayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+        ]
       },
       {
         path: "/buzzern",

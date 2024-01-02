@@ -92,7 +92,7 @@ const AudioQuiz = ({ game }) => {
 
     return (
         <>
-            <Overshooter teamId={activeTeamId} isVisible={overshooterVisible} />
+            <Overshooter />
             {questions.length > 0 && (
                 <div className='flex flex-1 flex-col'>
                     <div className='py-9 px-16 grid grid-rows-2 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex-1'>

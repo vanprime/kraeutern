@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowBigRight, Crown, Loader2, LogOut, Trash2 } from "lucide-react";
+import { ArrowBigRight, Crown, LogOut, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 import GameIdQrCode from "@/components/QRCode";
@@ -10,12 +10,6 @@ function StartHosting() {
     const { session, handleLogout } = useAuthContext();
 
     const { gameRoom, loading, handleCreateGameRoom, handleDeleteGameRoom } = useGamestateContext();
-
-    if (loading) return (
-        <div className="flex flex-1 flex-col h-full w-full justify-between">
-            <Loader2 className="m-auto animate-spin" />
-        </div>
-    )
 
     return (
         <div className='grid gap-4 my-4 md:my-auto w-full'>

@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Cctv } from 'lucide-react';
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { container, item } from '@/lib/animationProps';
 
 const Teamselect = () => {
 
@@ -9,23 +10,25 @@ const Teamselect = () => {
         <main className='flex flex-1 p-6'>
             <div className='flex flex-1 items-center bg-slate-900 rounded-3xl flex-col p-9'>
                 <h1 className='text-2xl font-semibold'>Select your Team</h1>
-                <div className="flex flex-col flex-1 p-9 justify-around">
-                    <Button asChild className="m-9 flex p-9">
-                        <Link className='text-xl font-semibold' to={'/buzzern/1'}>1</Link>
-                    </Button>
-                    <Button asChild className="m-9 flex p-9">
-                        <Link className='text-xl font-semibold' to={'/buzzern/2'}>2</Link>
-                    </Button>
-                    <Button asChild className="m-9 flex p-9">
-                        <Link className='text-xl font-semibold' to={'/buzzern/3'}>3</Link>
-                    </Button>
-                    <Button asChild className="m-9 flex p-9">
-                        <Link className='text-xl font-semibold' to={'/buzzern/4'}>4</Link>
-                    </Button>
+                <motion.div
+                    variants={container} initial="hidden" animate="show"
+                    className="flex flex-col flex-1 p-9 justify-around"
+                >
+                    {Array.from({ length: 4 }).map((_, index) => {
+                        return (
+                            <motion.div
+                                variants={item}
+                            >
+                                <Button asChild className="m-9 flex p-9">
+                                    <Link className='text-xl font-semibold' to={"/buzzern/" + (index + 1)}>{index + 1}</Link>
+                                </Button>
+                            </motion.div>
+                        )
+                    })}
                     <Button asChild variant="secondary" className="m-9 flex p-9">
                         <Link className='text-xl font-semibold' to={'/buzzern/blank'}><Cctv /></Link>
                     </Button>
-                </div>
+                </motion.div>
             </div>
         </main>
     );

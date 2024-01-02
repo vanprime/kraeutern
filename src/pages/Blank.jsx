@@ -6,7 +6,7 @@ function Blank() {
 
     return (
         <>
-            <Overshooter teamId={activeTeamId} isVisible={overshooterVisible} />
+            <Overshooter />
         </>
     );
 }

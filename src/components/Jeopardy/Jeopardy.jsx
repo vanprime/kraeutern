@@ -14,7 +14,7 @@ const Jeopardy = ({ game }) => {
     //TODO Make cols dynamic
     return (
         <>
-            <Overshooter teamId={activeTeamId} isVisible={overshooterVisible} />
+            <Overshooter />
             <div className={`grid gap-0 grid-cols-5`}>
                 {Object.entries(categories).map(([category, content]) => (
                     <Row

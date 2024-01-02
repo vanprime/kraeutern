@@ -21,7 +21,7 @@ export const GamestateProvider = ({ children }) => {
     const overshooter = useOvershooter(joinRoomId ? joinRoomId : gameRoom?.room_id);
 
     async function handleCreateGameRoom() {
-
+        setLoading(true)
         try {
             const { data, error } = await supabase
                 .from('gamestates')
@@ -48,7 +48,7 @@ export const GamestateProvider = ({ children }) => {
 
     async function handleDeleteGameRoom() {
         console.log('Deleting game room');
-
+        setLoading(true)
         try {
             const { data, error } = await supabase
                 .from('gamestates')
@@ -72,7 +72,7 @@ export const GamestateProvider = ({ children }) => {
 
     async function handleManualJoinGameRoom(manualJoinRoomId) {
         console.log('Trying to joining game room');
-
+        setLoading(true)
         try {
             const { data, error } = await supabase
                 .from('gamestates')
@@ -125,10 +125,12 @@ export const GamestateProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if (!session) return;
+        if (!session) {
+            setLoading(false)
+            return;
+        }
 
         async function fetchGameRoom() {
-
             setLoading(true);
 
             try {
