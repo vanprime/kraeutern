@@ -93,7 +93,7 @@ export const GamestateProvider = ({ children }) => {
             }
             if (data && data.length === 0) {
                 toast.error('Error joining game room', {
-                    description: 'No game found with this ID.',
+                    description: 'No game found with this ID',
                 });
                 throw new Error('No game found with this ID');
             }

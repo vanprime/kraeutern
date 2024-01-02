@@ -17,7 +17,7 @@ function StartHosting() {
     )
 
     return (
-        <div className='grid gap-4 my-4 md:my-auto'>
+        <div className='grid gap-4 my-4 md:my-auto w-full'>
             <p className="text-slate-500 ">Du bist mit <span className="text-foreground">{session?.user?.email}</span> eingeloggt.</p>
             {!gameRoom && (
                 <>
@@ -50,7 +50,7 @@ function StartHosting() {
                 </>
             )}
             <Button className="" variant="secondary" onClick={() => handleLogout()}>
-                <LogOut className='mr-[1ch]' />Log out
+                Log out <LogOut className='ml-[1ch]' />
             </Button>
         </div>
     );
