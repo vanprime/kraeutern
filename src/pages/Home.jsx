@@ -7,18 +7,19 @@ import StartHosting from '@/components/StartHosting';
 import usePageError from '@/hooks/usePageError';
 import useInvitation from '@/hooks/useInvitation';
 import { container, item } from '@/lib/animationProps';
+import SubscriptionHint from '@/components/SubscriptionHint';
 
 const Home = () => {
 
     const { session } = useAuthContext();
 
     const { pageError, setPageError } = usePageError();
-    const [submitted, setSubmitted] = useState(false)
+    const [submitted, setSubmitted] = useState("")
 
     useInvitation();
 
     return (
-        <div className="flex flex-col flex-1 justify-center items-center max-w-full md:max-w-96 md:mx-auto">
+        <div className="flex flex-col flex-1 justify-center items-center max-w-full md:w-96 md:mx-auto">
             {pageError && (
                 <div className='w-full top-0 text-center p-2 rounded my-4 bg-destructive text-destructive-foreground justify-self-start'>
                     <p>{pageError}</p>
@@ -38,10 +39,12 @@ const Home = () => {
                         variants={item}
                         className='flex-1 w-full'
                     >
-                        <Signup submitted={submitted} setSubmitted={setSubmitted} setPageError={setPageError} />
+                        {!submitted && <Signup setSubmitted={setSubmitted} setPageError={setPageError} />}
+                        {submitted && <SubscriptionHint />}
                     </motion.div>
                     <motion.div
                         variants={item}
+                        layout
                         className='flex-1 w-full'
                     >
                         <JoinGame />

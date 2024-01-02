@@ -23,12 +23,8 @@ const FormSchema = z.object({
     }),
 });
 
-import { motion } from 'framer-motion';
-import { container, item } from "@/lib/animationProps"
+function Signup({ setSubmitted, setPageError }) {
 
-function Signup({ submitted, setSubmitted, setPageError }) {
-
-    const [submittedTo, setSubmittedTo] = useState(null)
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -45,26 +41,8 @@ function Signup({ submitted, setSubmitted, setPageError }) {
                 description: "Please check your inbox and spam folder."
             }
         )
-        setSubmittedTo(data.email)
-        setSubmitted(true)
+        setSubmitted(data.email)
         setPageError(null);
-    }
-
-    if (submitted && submittedTo) {
-
-        return (
-            <motion.div className="grid gap-2" variants={container} initial="hidden" animate="show">
-                <motion.div className="flex items-center text-2xl border-b-2" variants={item}>
-                    <MailCheck className="mr-[1ch]" />
-                    <h1> Success </h1>
-                </motion.div>
-                <motion.div className="text-slate-500" variants={item}>
-                    <p>Check inbox and spam folder of <strong>{submittedTo}</strong> for an email from <em>Der Kanzler</em>.</p>
-                    <br />
-                    <p>Follow the Link to log in and create the Game. You can share the Game ID with your teams to have them buzzer.</p>
-                </motion.div>
-            </motion.div>
-        )
     }
 
     return (
