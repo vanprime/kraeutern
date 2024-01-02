@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowBigRight, Loader2, LogOut, Trash2 } from "lucide-react";
+import { ArrowBigRight, Crown, Loader2, LogOut, Trash2 } from "lucide-react";
 import { useAuthContext } from "@/providers/auth-provider";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 import GameIdQrCode from "@/components/QRCode";
+import JoinGame from "./JoinGame";
 
 function StartHosting() {
     const { session, handleLogout } = useAuthContext();
@@ -21,16 +22,13 @@ function StartHosting() {
             <p className="text-slate-500 ">Du bist mit <span className="text-foreground">{session?.user?.email}</span> eingeloggt.</p>
             {!gameRoom && (
                 <>
-                    <div className="text-slate-500 ">
-                        <p>Klicke auf den Button, um eine neue Runde zu starten. <br />
-                            Deine Freunde können über deine Game ID an die entsprechenden buzzer kommen.</p>
-                        <p>
-                            Du kannst auch einem anderen Spiel beitreten, indem du unten die Game ID eingibst.
-                        </p>
-                    </div>
+                    <p className="text-slate-500">Klicke auf den Button, um eine neue Runde zu starten.</p>
                     <Button className="w-full" disabled={loading} onClick={handleCreateGameRoom}>
-                        Start hosting
+                        Create Game <Crown className="ml-[1ch]" />
                     </Button>
+                    <div className="mt-4">
+                        <JoinGame />
+                    </div>
                 </>
             )}
             {gameRoom?.room_id && (

@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner";
 import { useGamestateContext } from "@/providers/gamestate-provider"
 import { useNavigate } from "react-router-dom"
+import { ArrowBigRight } from "lucide-react"
 
 const FormSchema = z.object({
     gameId: z.string().min(3, 'Input is too short.').max(37, 'Input is too long.'),
@@ -82,7 +83,7 @@ function JoinGame() {
                         variant="secondary"
                         disabled={!form.formState.isValid}
                     >
-                        Join game
+                        Join game <ArrowBigRight className="ml-[1ch]" />
                     </Button>
                 </form>
             </Form>
