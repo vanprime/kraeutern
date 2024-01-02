@@ -1,6 +1,5 @@
-// contexts/OvershooterContext.js
+// contexts/GamestateContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useOvershooter } from '@/hooks/useOvershooter';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthContext } from './auth-provider';
 import { toast } from 'sonner';
@@ -13,12 +12,38 @@ export const GamestateProvider = ({ children }) => {
 
     const { session } = useAuthContext();
 
-    const [gameRoom, setGameRoom] = useState(null);
-    const [joinRoomId, setJoinRoomId] = useState(null); //TODO to join games even when logged in
+    const [gameRoom, setGameRoom] = useState({});
+    const [joinRoomId, setJoinRoomId] = useState(); // joinRoomID takes precedence when existing
     const [loading, setLoading] = useState(true);
+    const [overshooterVisible, setOvershooterVisible] = useState(false);
+    const [activeTeamId, setActiveTeamId] = useState(null);
 
-    // joinRoomId is used for manual join and takes precedence over gameRoom
-    const overshooter = useOvershooter(joinRoomId ? joinRoomId : gameRoom?.room_id);
+    async function fetchGameRoom() {
+        setLoading(true);
+
+        try {
+            const { data, error } = await supabase
+                .from('gamestates')
+                .select('amount_buzzered, created_at, created_by, room_id, updated_at, team_id, buzzed')
+                .eq('creator_id', session.user.id)
+
+            if (error) {
+                setGameRoom(null);
+            };
+            if (data.length === 0) {
+                setGameRoom(null);
+            } else {
+                setGameRoom(data[0]);
+                setOvershooterVisible(data[0].buzzed);
+                setActiveTeamId(data[0].team_id);
+            }
+
+        } catch (err) {
+            console.error('Error fetching game room:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     async function handleCreateGameRoom() {
         setLoading(true)
@@ -56,14 +81,13 @@ export const GamestateProvider = ({ children }) => {
                 .eq('creator_id', session.user.id);
 
             if (error) {
-                console.error('Error creating game room:', error);
-                toast.error('Error creating game room', {
+                toast.error('Error deleting game room', {
                     description: error.message,
                 });
             };
-            setGameRoom(data);
+            setGameRoom(null);
         } catch (err) {
-            console.error('Error fetching game room:', err);
+            console.error('Error deleting game room:', err);
         } finally {
             setLoading(false);
         }
@@ -104,15 +128,40 @@ export const GamestateProvider = ({ children }) => {
         }
     }
 
-    async function handleBuzzerPress(team_id, manualJoinRoomId) {
+    async function fetchBuzzerState() {
 
-        if (overshooter.overshooterVisible) return;
+        try {
+            const { data, error } = await supabase
+                .from('gamestates')
+                .select('buzzed, team_id')
+                .eq('room_id', room_id)
+                .single();
+
+            if (data) {
+                setOvershooterVisible(data.buzzed)
+                setActiveTeamId(data.buzzed)
+            }
+
+            if (error) {
+                console.error('Error inserting buzzer press:', error);
+                toast.error('Error getting initial Buzzer state', {
+                    description: error.message
+                })
+                throw error;
+            }
+        } catch (err) {
+        }
+    }
+
+    async function handleBuzzerPress(team_id) {
+
+        if (overshooterVisible) return;
 
         try {
             const { data, error } = await supabase
                 .from('gamestates')
                 .update({ team_id: team_id, buzzed: true })
-                .eq('room_id', manualJoinRoomId ? manualJoinRoomId : gameRoom?.room_id)
+                .eq('room_id', joinRoomId ? joinRoomId : gameRoom?.room_id)
 
             if (error) {
                 toast.error('Error buzzing in', { description: error.message });
@@ -123,6 +172,76 @@ export const GamestateProvider = ({ children }) => {
         }
     };
 
+    async function hideBuzzer() {
+        console.log('Hiding buzzer');
+        try {
+            const { data, error } = await supabase
+                .from('gamestates')
+                .update({ team_id: 0, buzzed: false })
+                .eq('room_id', joinRoomId ? joinRoomId : gameRoom?.room_id);
+
+            if (error) {
+                console.error('Error inserting buzzer press:', error);
+                throw error;
+            }
+        } catch (err) {
+        }
+    };
+
+    // adding supabase subscription
+    useEffect(() => {
+
+        // Realtime subscription using Supabase v2 channel
+        const gameStateSubscription = supabase.channel('gamestates')
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gamestates' }, payload => {
+                if (payload.new.room_id === joinRoomId || payload.new.room_id === gameRoom.room_id) {
+                    setGameRoom(prevGameRoom => ({ ...prevGameRoom, ...payload.new }));
+                    setActiveTeamId(payload.new.team_id);
+                    setOvershooterVisible(payload.new.buzzed)
+                    console.log("Update registert on game room", payload.new)
+                } else {
+                    setOvershooterVisible(false);
+                }
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(gameStateSubscription);
+        };
+    }, [gameRoom?.room_id, joinRoomId]);
+
+    // adding eventListeners
+    useEffect(() => {
+
+        const handleKeyDown = (event) => {
+
+            if (event.key === '0') {
+                hideBuzzer();
+            }
+
+            if (!overshooterVisible) {
+                if (event.key >= '1' && event.key <= '4') {
+                    console.log("Buzzer pressed", "joinRoomId", joinRoomId, "gameRoom.room_id", gameRoom.room_id)
+                    handleBuzzerPress(event.key, joinRoomId ? joinRoomId : gameRoom.room_id)
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [gameRoom?.room_id, joinRoomId]);
+
+    useEffect(() => {
+
+        if (!joinRoomId) return;
+
+        fetchBuzzerState();
+    },
+        [joinRoomId])
+
     useEffect(() => {
 
         if (!session) {
@@ -130,39 +249,23 @@ export const GamestateProvider = ({ children }) => {
             return;
         }
 
-        async function fetchGameRoom() {
-            setLoading(true);
-
-            try {
-                const { data, error } = await supabase
-                    .from('gamestates')
-                    .select('amount_buzzered, created_at, created_by, room_id, updated_at')
-                    .eq('creator_id', session.user.id)
-
-                if (error) {
-                    setGameRoom(null);
-                };
-                if (data.length === 0) {
-                    setGameRoom(null);
-                } else {
-                    setGameRoom(data[0]);
-                }
-
-            } catch (err) {
-                console.error('Error fetching game room:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-
         fetchGameRoom();
     }, [session]);
 
+    useEffect(() => {
+        if (joinRoomId) {
+            return
+        }
+        if (session) {
+            fetchGameRoom();
+        }
+    }, []);
 
     return (
         <GamestateContext.Provider value={{
-            ...overshooter,
+            overshooterVisible,
+            activeTeamId,
+            hideBuzzer,
             loading,
             gameRoom,
             setGameRoom,
