@@ -16,7 +16,7 @@ export const GamestateProvider = ({ children }) => {
     const [gameRoom, setGameRoom] = useState({});
     const [joinRoomId, setJoinRoomId] = useState(); // joinRoomID takes precedence when existing
     const [loading, setLoading] = useState(true);
-    const [overshooterVisible, setOvershooterVisible] = useState(false);
+    const [overshooterVisible, setOvershooterVisible] = useState(null);
     const [activeTeamId, setActiveTeamId] = useState(null);
 
     async function fetchGameRoom() {

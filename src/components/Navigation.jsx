@@ -29,15 +29,17 @@ const Navigation = () => {
     ]
 
     return (
-        <nav className="mx-6 py-4 border-b-2 gap-6 whitespace-nowrap flex flex-wrap">
+        <nav className="mx-6 py-4 border-b-2 gap-6 sm:gap-4 whitespace-nowrap flex flex-wrap">
             {navLinks.map(link => (
                 <Link
                     key={link.href}
                     to={link.href}
-                    className="flex items-center hover:underline"
+                    className="flex items-center hover:underline p-2"
                 >
                     {link.icon && link.icon}
-                    {link.name}
+                    <span className="hidden sm:block">
+                        {link.name}
+                    </span>
                 </Link>
             ))}
         </nav>
