@@ -1,12 +1,14 @@
 import GamesList from "@/components/GamesList";
 import GameStats from "@/components/Gamestats";
 import StartHosting from "@/components/StartHosting";
+import { useSupscription } from "@/hooks/useSubscription";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 
 
 function Host() {
 
     const { loading, gameRoom } = useGamestateContext();
+    useSupscription();
 
     return (
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 md:gap-12 h-full">

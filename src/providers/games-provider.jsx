@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { toast } from 'sonner';
 
@@ -31,7 +31,7 @@ export const GamesProvider = ({ children }) => {
             } finally {
                 setLoading(false);
             }
-        };
+        }
 
         fetchGames();
     }, []);

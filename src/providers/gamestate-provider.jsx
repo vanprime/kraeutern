@@ -1,9 +1,8 @@
 // contexts/GamestateContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthContext } from './auth-provider';
 import { toast } from 'sonner';
-import { useLocation } from 'react-router-dom';
 
 const GamestateContext = createContext();
 
@@ -26,7 +25,7 @@ export const GamestateProvider = ({ children }) => {
             const { data, error } = await supabase
                 .from('gamestates')
                 .select('amount_buzzered, created_at, created_by, room_id, updated_at, team_id, buzzed')
-                .eq('creator_id', session.user.id)
+                .eq('creator_id', session.user.id);
 
             if (error) {
                 setGameRoom(null);
@@ -158,88 +157,6 @@ export const GamestateProvider = ({ children }) => {
         }
     }
 
-    async function handleBuzzerPress(team_id) {
-        console.log("overshooterVisible", overshooterVisible)
-        console.log("team_id", team_id)
-        if (overshooterVisible) return;
-
-        try {
-            const { data, error } = await supabase
-                .from('gamestates')
-                .update({ team_id: team_id, buzzed: true })
-                .eq('room_id', joinRoomId ? joinRoomId : gameRoom?.room_id)
-
-            if (error) {
-                toast.error('Error buzzing in', { description: error.message });
-            }
-
-        } catch (err) {
-            console.error('Error in insertBuzzerPress:', err);
-        }
-    };
-
-    async function hideBuzzer() {
-        console.log('Hiding buzzer');
-        try {
-            const { data, error } = await supabase
-                .from('gamestates')
-                .update({ team_id: 0, buzzed: false })
-                .eq('room_id', joinRoomId ? joinRoomId : gameRoom?.room_id);
-
-            if (error) {
-                console.error('Error inserting buzzer press:', error);
-                throw error;
-            }
-        } catch (err) {
-        }
-    };
-
-    // adding supabase subscription
-    useEffect(() => {
-
-        // Realtime subscription using Supabase v2 channel
-        const gameStateSubscription = supabase.channel('gamestates')
-            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'gamestates' }, payload => {
-                if (payload.new.room_id === joinRoomId || payload.new.room_id === gameRoom.room_id) {
-                    setGameRoom(prevGameRoom => ({ ...prevGameRoom, ...payload.new }));
-                    setActiveTeamId(payload.new.team_id);
-                    setOvershooterVisible(payload.new.buzzed)
-                    console.log("Update registert on game room", payload.new)
-                } else {
-                    setOvershooterVisible(false);
-                }
-            })
-            .subscribe();
-
-        return () => {
-            supabase.removeChannel(gameStateSubscription);
-        };
-    }, [gameRoom?.room_id, joinRoomId]);
-
-    // adding eventListeners
-    useEffect(() => {
-
-        const handleKeyDown = (event) => {
-
-            if (event.key === '0') {
-                hideBuzzer();
-            }
-
-            if (!overshooterVisible) {
-                if (event.key >= '1' && event.key <= '4') {
-                    console.log("Buzzer pressed", "joinRoomId", joinRoomId, "gameRoom.room_id", gameRoom.room_id)
-                    handleBuzzerPress(event.key, joinRoomId ? joinRoomId : gameRoom.room_id)
-                }
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [gameRoom?.room_id, joinRoomId]);
-
     useEffect(() => {
 
         if (!joinRoomId) return;
@@ -270,15 +187,15 @@ export const GamestateProvider = ({ children }) => {
     return (
         <GamestateContext.Provider value={{
             overshooterVisible,
+            setOvershooterVisible,
             activeTeamId,
-            hideBuzzer,
+            setActiveTeamId,
             loading,
             gameRoom,
             setGameRoom,
             joinRoomId,
             handleCreateGameRoom,
             handleDeleteGameRoom,
-            handleBuzzerPress,
             handleManualJoinGameRoom
         }}>
             {children}
