@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthContext } from './auth-provider';
 import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
 
 const GamestateContext = createContext();
 
@@ -62,10 +63,13 @@ export const GamestateProvider = ({ children }) => {
                 toast.error('Error creating game room', {
                     description: error.message,
                 });
-            };
-            setGameRoom(data);
+                setGameRoom(null); // Set game room to null if there's an error
+            } else {
+                setGameRoom(data); // Only set game room to data if there's no error
+            }
         } catch (err) {
             console.error('Error fetching game room:', err);
+            setGameRoom(null); // Set game room to null if there's an unexpected error
         } finally {
             setLoading(false);
         }
@@ -81,21 +85,22 @@ export const GamestateProvider = ({ children }) => {
                 .eq('creator_id', session.user.id);
 
             if (error) {
+                console.error('Error deleting game room:', error);
                 toast.error('Error deleting game room', {
                     description: error.message,
                 });
-            };
-            setGameRoom(null);
+            } else {
+                setGameRoom(data);
+            }
         } catch (err) {
             console.error('Error deleting game room:', err);
         } finally {
             setLoading(false);
         }
-
     }
 
     async function handleManualJoinGameRoom(manualJoinRoomId) {
-        console.log('Trying to joining game room');
+        console.log('Trying to joining game room: ', manualJoinRoomId);
         setLoading(true)
         try {
             const { data, error } = await supabase
@@ -123,7 +128,6 @@ export const GamestateProvider = ({ children }) => {
             }
         } catch (err) {
             console.error(err);
-            throw err;
         } finally {
             setLoading(false);
         }
@@ -155,7 +159,8 @@ export const GamestateProvider = ({ children }) => {
     }
 
     async function handleBuzzerPress(team_id) {
-
+        console.log("overshooterVisible", overshooterVisible)
+        console.log("team_id", team_id)
         if (overshooterVisible) return;
 
         try {

@@ -83,7 +83,7 @@ function JoinGame() {
                         variant="secondary"
                         disabled={!form.formState.isValid}
                     >
-                        Join game <ArrowBigRight className="ml-[1ch]" />
+                        Join game <ArrowBigRight className="ml-[1ch] h-4 w-4" />
                     </Button>
                 </form>
             </Form>

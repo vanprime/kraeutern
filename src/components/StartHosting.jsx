@@ -25,7 +25,7 @@ function StartHosting({ hideupperPart = false }) {
                 <>
                     <p className="text-slate-500">Klicke auf den Button, um eine neue Runde zu starten.</p>
                     <Button className="w-full" disabled={loading} onClick={handleCreateGameRoom}>
-                        Create Game <Crown className="ml-[1ch]" />
+                        Create Game <Crown className="ml-[1ch] h-4 w-4" />
                     </Button>
                     <div className="mt-4">
                         <JoinGame />
@@ -39,19 +39,19 @@ function StartHosting({ hideupperPart = false }) {
                             <p className="text-slate-500 ">Du hostest ein Game mit der ID: <br /> <span className="text-foreground">{gameRoom.room_id}</span></p>
                             <Button className="w-full" asChild>
                                 <Link to="/host">
-                                    Zum Game Dashboard <ArrowBigRight className="ml-[1ch]" />
+                                    Zum Game Dashboard <ArrowBigRight className="ml-[1ch] h-4 w-4" />
                                 </Link>
                             </Button>
                         </div>
                     )}
                     <GameIdQrCode />
                     <Button variant="destructive" disabled={loading} onClick={handleDeleteGameRoom}>
-                        Game löschen <Trash2 className="ml-[1ch]" />
+                        Game löschen <Trash2 className="ml-[1ch] h-4 w-4" />
                     </Button>
                 </>
             )}
             <Button className="" variant="secondary" onClick={() => handleLogout()}>
-                Log out <LogOut className='ml-[1ch]' />
+                Log out <LogOut className='ml-[1ch] h-4 w-4' />
             </Button>
         </motion.div>
     );

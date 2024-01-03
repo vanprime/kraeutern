@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import QRCode from "react-qr-code";
 import { useGamestateContext } from '@/providers/gamestate-provider';
 import { Button } from './ui/button';
-import { ClipboardCopy } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { baseUrl } from '@/main';
 
@@ -43,7 +43,7 @@ const GameIdQrCode = () => {
             <Button
                 variant="secondary"
                 onClick={() => copyToClipboard()}
-            > Copy Link to clipboard <ClipboardCopy className="ml-[1ch]" /></Button>
+            > Copy Link to clipboard <Copy className="ml-[1ch] h-4 w-4" /></Button>
         </div>
     );
 };
