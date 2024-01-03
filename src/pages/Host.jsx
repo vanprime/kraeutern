@@ -1,9 +1,7 @@
 import GamesList from "@/components/GamesList";
 import GameStats from "@/components/Gamestats";
 import StartHosting from "@/components/StartHosting";
-import { Button } from "@/components/ui/button";
 import { useGamestateContext } from "@/providers/gamestate-provider";
-import { useEffect, useState } from "react";
 
 
 function Host() {
