@@ -2,6 +2,11 @@ import { supabase } from "@/lib/supabaseClient"
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+/**
+ * Custom hook to fetch game details from the database.
+ * @param {string} gameId - The ID of the game to fetch details for.
+ * @returns {Object} An object containing the game details and a loading state.
+ */
 export const useGameDetails = (gameId) => {
 
     const [gameDetails, setGameDetails] = useState({})

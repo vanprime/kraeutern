@@ -8,7 +8,22 @@ const GamestateContext = createContext();
 
 export const useGamestateContext = () => useContext(GamestateContext);
 
-export const GamestateProvider = ({ children }) => {
+/**
+ * Custom hook to manage game state.
+ * @returns {Object} An object containing the game state and related functions.
+ * @returns {boolean} overshooterVisible - Indicates whether the overshooter is visible.
+ * @returns {Function} setOvershooterVisible - Function to set the visibility of the overshooter.
+ * @returns {string} activeTeamId - The ID of the currently active team.
+ * @returns {Function} setActiveTeamId - Function to set the active team.
+ * @returns {boolean} loading - Indicates whether the game state is currently being loaded.
+ * @returns {Object} gameRoom - The current game room's data.
+ * @returns {Function} setGameRoom - Function to update the game room's data.
+ * @returns {string} joinRoomId - The ID of the room that the player is trying to join.
+ * @returns {Function} handleCreateGameRoom - Function to create a new game room.
+ * @returns {Function} handleDeleteGameRoom - Function to delete the current game room.
+ * @returns {Function} handleManualJoinGameRoom - Function to manually join a game room. This function takes the ID of the room to join as a parameter.
+ */
+const useGameState = () => {
 
     const { session } = useAuthContext();
 
@@ -18,6 +33,9 @@ export const GamestateProvider = ({ children }) => {
     const [overshooterVisible, setOvershooterVisible] = useState(null);
     const [activeTeamId, setActiveTeamId] = useState(null);
 
+    /**
+     * Fetches the game room from the database.
+     */
     async function fetchGameRoom() {
         setLoading(true);
 
@@ -45,6 +63,9 @@ export const GamestateProvider = ({ children }) => {
         }
     };
 
+    /**
+    * Creates a new game room in the database.
+    */
     async function handleCreateGameRoom() {
         setLoading(true)
         try {
@@ -74,6 +95,9 @@ export const GamestateProvider = ({ children }) => {
         }
     }
 
+    /**
+     * Deletes the game room from the database.
+     */
     async function handleDeleteGameRoom() {
         console.log('Deleting game room');
         setLoading(true)
@@ -98,6 +122,11 @@ export const GamestateProvider = ({ children }) => {
         }
     }
 
+    /** 
+    * Joins a game room manually.
+    * @param {string} manualJoinRoomId - The ID of the game room to join.
+    * @returns {boolean} Whether the game room was joined successfully.
+    */
     async function handleManualJoinGameRoom(manualJoinRoomId) {
         console.log('Trying to joining game room: ', manualJoinRoomId);
         setLoading(true)
@@ -132,6 +161,9 @@ export const GamestateProvider = ({ children }) => {
         }
     }
 
+    /**
+     * Fetches the buzzer state from the database.
+     */
     async function fetchBuzzerState() {
 
         try {
@@ -184,20 +216,28 @@ export const GamestateProvider = ({ children }) => {
         }
     }, []);
 
+    return {
+        overshooterVisible,
+        setOvershooterVisible,
+        activeTeamId,
+        setActiveTeamId,
+        loading,
+        gameRoom,
+        setGameRoom,
+        joinRoomId,
+        handleCreateGameRoom,
+        handleDeleteGameRoom,
+        handleManualJoinGameRoom
+    }
+
+}
+
+export const GamestateProvider = ({ children }) => {
+
+    const value = useGameState();
+
     return (
-        <GamestateContext.Provider value={{
-            overshooterVisible,
-            setOvershooterVisible,
-            activeTeamId,
-            setActiveTeamId,
-            loading,
-            gameRoom,
-            setGameRoom,
-            joinRoomId,
-            handleCreateGameRoom,
-            handleDeleteGameRoom,
-            handleManualJoinGameRoom
-        }}>
+        <GamestateContext.Provider value={value}>
             {children}
         </GamestateContext.Provider>
     );

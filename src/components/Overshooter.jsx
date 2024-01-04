@@ -5,10 +5,12 @@ import team2 from '@/assets/2.png';
 import team3 from '@/assets/3.png';
 import team4 from '@/assets/4.png';
 import { useGamestateContext } from '@/providers/gamestate-provider';
+import { useBuzzer } from '@/hooks/useBuzzer';
 
 const Overshooter = () => {
 
     const { activeTeamId, overshooterVisible } = useGamestateContext();
+    useBuzzer();
 
     if (!overshooterVisible) return null;
 

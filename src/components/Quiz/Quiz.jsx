@@ -6,11 +6,8 @@ import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { InterruptScreen } from '@/components/InterruptScreen';
 import Overshooter from '@/components/Overshooter';
-import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const Quiz = ({ game }) => {
-
-    const { overshooterVisible, activeTeamId } = useGamestateContext();
 
     const pausePoints = [26]; // Define your pause points
     const { questions,
