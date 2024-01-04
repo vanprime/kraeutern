@@ -1,63 +1,36 @@
 // AudioQuiz component
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { InterruptScreen } from '@/components/InterruptScreen';
 import useQuiz from '@/hooks/useQuiz';
 import Overshooter from '@/components/Overshooter';
-import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const AudioQuiz = ({ game }) => {
 
-    const { overshooterVisible, activeTeamId } = useGamestateContext()
-
     const pausePoints = [30]; // Define your pause points
-    const { questions,
-        currentQuestionIndex,
+    const {
+        questions,
+        gameState,
         goToNextQuestion,
         goToPreviousQuestion,
-        showSolution,
-        setShowSolution,
-        loading,
-        isPaused,
-        resumeAudioQuiz,
+        resumeQuiz,
+        toggleSolution,
     } = useQuiz(game, pausePoints);
 
     const audioRef = useRef(new Audio());
     const [audioSrc, setAudioSrc] = useState('');
 
     useEffect(() => {
-        if (currentQuestionIndex >= 0 && questions.length > 0) {
-            setAudioSrc(questions[currentQuestionIndex].question);
+        if (gameState.currentQuestionIndex >= 0 && questions.length > 0) {
+            setAudioSrc(questions[gameState.currentQuestionIndex].question);
         }
-    }, [currentQuestionIndex, questions]);
-
-    const toggleSolution = () => {
-        if (!isPaused) {
-            setShowSolution(!showSolution)
-        }
-    };
-
-    // Key handler
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'ArrowRight') {
-                goToNextQuestion();
-            } else if (e.key === 'ArrowLeft') {
-                goToPreviousQuestion();
-            } else if (e.key === ' ') { // Listen for the 'Space' key
-                toggleSolution();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [goToNextQuestion, goToPreviousQuestion, toggleSolution, currentQuestionIndex, isPaused]);
+    }, [gameState.currentQuestionIndex, questions]);
 
     useEffect(() => {
         const loadAudio = async () => {
-            const audioURL = questions[currentQuestionIndex].question;
+            const audioURL = questions[gameState.currentQuestionIndex].question;
             const cacheName = 'audio-cache';
             const cache = await caches.open(cacheName);
             const cachedResponse = await cache.match(audioURL);
@@ -74,19 +47,19 @@ const AudioQuiz = ({ game }) => {
             audioRef.current.load();
         };
 
-        if (currentQuestionIndex >= 0 && questions.length > 0) {
+        if (gameState.currentQuestionIndex >= 0 && questions.length > 0) {
             loadAudio();
         }
-    }, [currentQuestionIndex, questions]);
+    }, [gameState.currentQuestionIndex, questions]);
 
 
     //pause screen
-    if (isPaused) {
+    if (gameState.isPaused) {
         return (
             <InterruptScreen
                 title={'Pause!'}
                 description={'Kurz mal durchatmen, mit dem Button unten geht\'s weiter!'}
-                callback={resumeAudioQuiz} />
+                callback={resumeQuiz} />
         )
     }
 
@@ -102,12 +75,12 @@ const AudioQuiz = ({ game }) => {
                                     Round
                                 </p>
                                 <motion.p
-                                    key={currentQuestionIndex}  // Add the key prop
+                                    key={gameState.currentQuestionIndex}  // Add the key prop
                                     initial={{ y: '0.5ch', opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ duration: 0.25 }}
                                 >
-                                    {currentQuestionIndex + 1}
+                                    {gameState.currentQuestionIndex + 1}
                                 </motion.p>
                             </div>
                             <div className="flex flex-1 flex-col justify-around p-9 items-center">
@@ -117,14 +90,14 @@ const AudioQuiz = ({ game }) => {
                             </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            {showSolution && (
+                            {gameState.showSolution && (
                                 <motion.p
-                                    key={showSolution}
+                                    key={gameState.showSolution}
                                     initial={{ x: '2ch', opacity: 0, scale: 0.99, }}
                                     animate={{ x: 0, opacity: 1, scale: 1, }}
                                     transition={{ duration: 0.25 }}
                                     className='font-semibold text-[3rem] text-purple-700'>
-                                    {questions[currentQuestionIndex].solution}
+                                    {questions[gameState.currentQuestionIndex].solution}
                                 </motion.p>
                             )
                             }
@@ -134,18 +107,18 @@ const AudioQuiz = ({ game }) => {
                         <Button
                             variant="secondary"
                             onClick={goToPreviousQuestion}
-                            disabled={currentQuestionIndex === 0}>
+                            disabled={gameState.currentQuestionIndex === 0}>
                             <ArrowLeft />
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={toggleSolution}>
-                            {showSolution ? 'Hide Solution' : 'Show Solution'}
+                            {gameState.showSolution ? 'Hide Solution' : 'Show Solution'}
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={goToNextQuestion}
-                            disabled={currentQuestionIndex === questions.length - 1}
+                            disabled={gameState.currentQuestionIndex === questions.length - 1}
                         >
                             <ArrowRight />
                         </Button>

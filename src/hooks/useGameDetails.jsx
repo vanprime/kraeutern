@@ -32,7 +32,6 @@ export const useGameDetails = (gameId) => {
                     setGameDetails(data);
                 } catch (err) {
                     console.error('Error fetching game details:', err);
-                    setError(err);
                 } finally {
                     setLoading(false);
                 }

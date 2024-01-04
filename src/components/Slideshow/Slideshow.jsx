@@ -5,27 +5,23 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Overshooter from '@/components/Overshooter';
-import { useGamestateContext } from '@/providers/gamestate-provider';
 
 const Slideshow = ({ game }) => {
 
-    const { overshooterVisible, activeTeamId } = useGamestateContext();
-
     const pausePoints = [26]; // Define your pause points
     const { questions,
-        currentQuestionIndex,
+        gameState,
+        setGameState,
         goToNextQuestion,
         goToPreviousQuestion,
-        showSolution,
-        setShowSolution,
-        isPaused,
+        loading,
     } = useQuiz(game, pausePoints);
 
     const [imgSrc, setImgSrc] = useState('');
 
     const toggleSolution = () => {
-        if (!isPaused) {
-            setShowSolution(!showSolution)
+        if (!gameState.isPaused) {
+            setGameState({ ...gameState, showSolution: !gameState.showSolution })
         }
     };
 
@@ -42,13 +38,13 @@ const Slideshow = ({ game }) => {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [goToNextQuestion, goToPreviousQuestion, toggleSolution, currentQuestionIndex, isPaused]);
+    }, [gameState]);
 
     useEffect(() => {
-        if (currentQuestionIndex >= 0 && questions.length > 0) {
-            setImgSrc(questions[currentQuestionIndex].question);
+        if (gameState.currentQuestionIndex >= 0 && questions.length > 0) {
+            setImgSrc(questions[gameState.currentQuestionIndex].question);
         }
-    }, [currentQuestionIndex, questions]);
+    }, [gameState?.currentQuestionIndex, questions]);
 
     return (
         <>
@@ -62,25 +58,25 @@ const Slideshow = ({ game }) => {
                                     Question
                                 </p>
                                 <motion.p
-                                    key={currentQuestionIndex}  // Add the key prop
+                                    key={gameState.currentQuestionIndex}  // Add the key prop
                                     initial={{ y: '0.5ch', opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ duration: 0.25 }}
                                 >
-                                    {currentQuestionIndex + 1}
+                                    {gameState.currentQuestionIndex + 1}
                                 </motion.p>
                             </div>
                             <img src={imgSrc} />
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            {showSolution && (
+                            {gameState.showSolution && (
                                 <motion.p
-                                    key={showSolution}
+                                    key={gameState.showSolution}
                                     initial={{ x: '2ch', opacity: 0, scale: 0.99, }}
                                     animate={{ x: 0, opacity: 1, scale: 1, }}
                                     transition={{ duration: 0.25 }}
                                     className='font-semibold text-[3rem] text-purple-700'>
-                                    {questions[currentQuestionIndex].solution}
+                                    {questions[gameState.currentQuestionIndex].solution}
                                 </motion.p>
                             )
                             }
@@ -90,18 +86,18 @@ const Slideshow = ({ game }) => {
                         <Button
                             variant="secondary"
                             onClick={goToPreviousQuestion}
-                            disabled={currentQuestionIndex === 0}>
+                            disabled={gameState.currentQuestionIndex === 0}>
                             <ArrowLeft />
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={toggleSolution}>
-                            {showSolution ? 'Hide Solution' : 'Show Solution'}
+                            {gameState.showSolution ? 'Hide Solution' : 'Show Solution'}
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={goToNextQuestion}
-                            disabled={currentQuestionIndex === questions.length - 1}
+                            disabled={gameState.currentQuestionIndex === questions.length - 1}
                         >
                             <ArrowRight />
                         </Button>

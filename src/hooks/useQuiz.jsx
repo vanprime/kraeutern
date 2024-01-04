@@ -1,87 +1,129 @@
 // useQuiz.js
-// TODO https://chat.openai.com/share/bcbeb4cd-b8c4-4e57-8158-9f9f2784d0d0
 import { supabase } from '@/lib/supabaseClient';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 
 const useQuiz = (game, pausePoints = []) => {
-    const location = useLocation();
+
     const navigate = useNavigate();
+
     const [questions, setQuestions] = useState([]);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [showSolution, setShowSolution] = useState(false);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [isPaused, setIsPaused] = useState(false);
+    const [gameState, setGameState] = useState({
+        currentQuestionIndex: 0,
+        showSolution: false,
+        isPaused: false,
+    });
 
-    const saveGameState = () => {
-        const gameState = {
-            questions,
-            currentQuestionIndex,
-            showSolution,
-            isPaused
-        };
-        localStorage.setItem(game.slug, JSON.stringify(gameState));
+
+    const saveGame = () => {
+        localStorage.setItem(game.slug, JSON.stringify({ questions, gameState }));
     };
 
-    const loadGameState = () => {
-        let gameState = localStorage.getItem(game.slug);
-        if (gameState) {
-            gameState = JSON.parse(gameState);
-            toast(`${game.name} savegame loaded`, {
-                description: `continuing at round ${gameState.currentQuestionIndex + 1}`,
-                position: "bottom-right",
-            });
-            setQuestions(gameState.questions);
-            setCurrentQuestionIndex(gameState.currentQuestionIndex);
-            setShowSolution(false); //to prevent showing solution when restoring game
-            setIsPaused(gameState.isPaused);
-            updateHash(gameState.currentQuestionIndex);
-            setLoading(false);
+    // try to load game from local storage
+    const loadGame = () => {
+        let savegame = localStorage.getItem(game.slug);
+
+        if (savegame) {
+            try {
+                savegame = JSON.parse(savegame);
+                if (savegame.questions.length > 0 && savegame.gameState) {
+                    return true
+                } else {
+                    return false
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
         } else {
-            fetchGameData();
+            return false
         }
     };
 
+    //ensuring that the game is loaded from local storage if possible
+    const handleLoadGame = () => {
+        const success = loadGame();
+
+        if (success) {
+            const savegame = JSON.parse(localStorage.getItem(game.slug));
+            setQuestions(savegame.questions);
+            setGameState(savegame.gameState);
+            updateHash(savegame.gameState.currentQuestionIndex);
+            toast('Savegame found', { description: `continuing at question ${savegame.gameState.currentQuestionIndex + 1}` })
+        } else {
+            fetchGameData();
+        }
+    }
+
     // Function to reset state
     const resetState = () => {
-        setShowSolution(false);
-        setIsPaused(false);
-        setCurrentQuestionIndex(0);
+        setQuestions([]);
+        setGameState({
+            currentQuestionIndex: 0,
+            showSolution: false,
+            isPaused: false,
+        });
     };
 
     const updateHash = (index) => {
-        if (index >= 0 && index < questions.length) {
+        if (index >= 1 && index < questions.length) {
             navigate(`#q${questions[index].order}`, { replace: true });
         }
     };
 
     const goToNextQuestion = () => {
-        setShowSolution(false);
-        if (currentQuestionIndex < questions.length - 1 && !isPaused) {
-            const newIndex = currentQuestionIndex + 1;
-            setCurrentQuestionIndex(newIndex);
+        if (gameState.currentQuestionIndex < questions.length - 1 && !gameState.isPaused) {
+            const newIndex = gameState.currentQuestionIndex + 1;
+            setGameState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: prevState.currentQuestionIndex + 1,
+                showSolution: false
+            }));
             updateHash(newIndex);
-
             if (pausePoints.includes(newIndex + 1)) { // Check if next question is a pause point
-                setIsPaused(true); // Pause the quiz
+                pauseQuiz();
             }
         };
     };
 
     const goToPreviousQuestion = () => {
-        setShowSolution(false);
-        if (currentQuestionIndex > 0 && !isPaused) {
-            const newIndex = currentQuestionIndex - 1;
-            setCurrentQuestionIndex(newIndex);
+        if (gameState.currentQuestionIndex > 0 && !gameState.isPaused) {
+            const newIndex = gameState.currentQuestionIndex - 1;
+            setGameState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: newIndex,
+                showSolution: false
+            }));
             updateHash(newIndex);
         }
     };
 
+    const toggleSolution = () => {
+        if (!gameState.isPaused) {
+            setGameState(prevState => ({
+                ...prevState,
+                showSolution: !prevState.showSolution
+            }));
+        }
+    };
+
+    const pauseQuiz = () => {
+        setGameState(prevstate => ({
+            ...prevstate,
+            isPaused: true,
+            showSolution: false
+        }))
+    };
+
     const resumeQuiz = () => {
-        setIsPaused(false);
+        setGameState(prevstate => ({
+            ...prevstate,
+            isPaused: false
+        }))
     };
 
     const fetchGameData = async () => {
@@ -98,48 +140,54 @@ const useQuiz = (game, pausePoints = []) => {
             }
 
             setQuestions(data);
-            setCurrentQuestionIndex(0); // Reset to the first question
-            updateHash(0); // Update hash to the first question
+            updateHash(1); // Update hash to the first question
         } catch (err) {
             console.error('Error fetching game content:', err);
-            setError(err);
             toast.error("Error fetching game content", {
                 description: err?.message,
-                position: "top-right",
             });
         } finally {
             setLoading(false);
         }
     };
 
+    //loading game on game slug change
     useEffect(() => {
-        resetState(); // Reset state whenever the game changes
-        loadGameState();
+        handleLoadGame();
     }, [game.slug]);
 
+    // auto saving to local storage
     useEffect(() => {
-        const index = questions.findIndex(q => `q${q.order}` === location.hash.replace('#', ''));
-        if (index >= 0) {
-            setCurrentQuestionIndex(index);
+        if (questions && gameState.currentQuestionIndex >= 2 && gameState.currentQuestionIndex < questions.length) {
+            saveGame();
         }
-    }, [location.hash, questions, currentQuestionIndex]);
+    }, [questions, gameState]);
 
+    //adding key listeners
     useEffect(() => {
-        if (questions && currentQuestionIndex >= 0 && currentQuestionIndex < questions.length) {
-            saveGameState();
-        }
-    }, [questions, currentQuestionIndex, showSolution, isPaused]);
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowRight') {
+                goToNextQuestion();
+            } else if (e.key === 'ArrowLeft') {
+                goToPreviousQuestion();
+            } else if (e.key === ' ') { // Listen for the 'Space' key
+                toggleSolution();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [gameState, questions, goToNextQuestion, goToPreviousQuestion, toggleSolution]);
 
     return {
         questions,
-        currentQuestionIndex,
+        gameState,
+        setGameState,
         goToNextQuestion,
         goToPreviousQuestion,
-        showSolution,
-        setShowSolution,
         loading,
-        isPaused,
         resumeQuiz,
+        toggleSolution,
     };
 };
 

@@ -1,6 +1,5 @@
 // Quiz component
 import useQuiz from '@/hooks/useQuiz';
-import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -10,40 +9,18 @@ import Overshooter from '@/components/Overshooter';
 const Quiz = ({ game }) => {
 
     const pausePoints = [26]; // Define your pause points
-    const { questions,
-        currentQuestionIndex,
+    const {
+        questions,
+        gameState,
         goToNextQuestion,
         goToPreviousQuestion,
-        showSolution,
-        setShowSolution,
         loading,
-        isPaused,
         resumeQuiz,
+        toggleSolution,
     } = useQuiz(game, pausePoints);
 
-    const toggleSolution = () => {
-        if (!isPaused) {
-            setShowSolution(!showSolution)
-        }
-    };
-
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'ArrowRight') {
-                goToNextQuestion();
-            } else if (e.key === 'ArrowLeft') {
-                goToPreviousQuestion();
-            } else if (e.key === ' ') { // Listen for the 'Space' key
-                toggleSolution();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [goToNextQuestion, goToPreviousQuestion, toggleSolution, currentQuestionIndex, isPaused]);
-
     //pause screen
-    if (isPaused) {
+    if (gameState?.isPaused) {
         return (
             <InterruptScreen
                 title={'Pause!'}
@@ -51,6 +28,7 @@ const Quiz = ({ game }) => {
                 callback={resumeQuiz} />
         )
     }
+
     //loading screen
     if (loading) {
         return (
@@ -63,7 +41,7 @@ const Quiz = ({ game }) => {
     return (
         <>
             <Overshooter />
-            {questions.length > 0 && (
+            {questions?.length > 0 && (
                 <div className='flex flex-1 flex-col'>
                     <div className='py-9 px-16 grid grid-rows-2 rounded bg-gradient-light-blue bg-180 animate-gradient-animation flex-1'>
                         <div className='flex flex-1 flex-col justify-between'>
@@ -72,34 +50,34 @@ const Quiz = ({ game }) => {
                                     Question
                                 </p>
                                 <motion.p
-                                    key={currentQuestionIndex}  // Add the key prop
+                                    key={gameState.currentQuestionIndex}  // Add the key prop
                                     initial={{ y: '0.5ch', opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ duration: 0.25 }}
                                 >
-                                    {currentQuestionIndex + 1}
+                                    {gameState.currentQuestionIndex + 1}
                                 </motion.p>
                             </div>
                             <div className="flex flex-1 justify-center items-center">
                                 <motion.p
-                                    key={questions[currentQuestionIndex].question}
+                                    key={questions[gameState.currentQuestionIndex].question}
                                     initial={{ x: '-1ch', opacity: 0, scale: 0.99, }}
                                     animate={{ x: 0, opacity: 1, scale: 1, }}
                                     transition={{ duration: 0.25 }}
                                     className='font-semibold tracking-wide text-[3.8vw] leading-tight text-indigo-950 text-center'>
-                                    {questions[currentQuestionIndex].question}
+                                    {questions[gameState.currentQuestionIndex].question}
                                 </motion.p>
                             </div>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            {showSolution && (
+                            {gameState.showSolution && (
                                 <motion.p
-                                    key={showSolution}
+                                    key={gameState.showSolution}
                                     initial={{ x: '2ch', opacity: 0, scale: 0.99, }}
                                     animate={{ x: 0, opacity: 1, scale: 1, }}
                                     transition={{ duration: 0.25 }}
                                     className='font-semibold text-[3rem] text-purple-700'>
-                                    {questions[currentQuestionIndex].solution}
+                                    {questions[gameState.currentQuestionIndex].solution}
                                 </motion.p>
                             )
                             }
@@ -109,18 +87,18 @@ const Quiz = ({ game }) => {
                         <Button
                             variant="secondary"
                             onClick={goToPreviousQuestion}
-                            disabled={currentQuestionIndex === 0}>
+                            disabled={gameState.currentQuestionIndex === 0}>
                             <ArrowLeft />
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={toggleSolution}>
-                            {showSolution ? 'Hide Solution' : 'Show Solution'}
+                            {gameState.showSolution ? 'Hide Solution' : 'Show Solution'}
                         </Button>
                         <Button
                             variant="secondary"
                             onClick={goToNextQuestion}
-                            disabled={currentQuestionIndex === questions.length - 1}
+                            disabled={gameState.currentQuestionIndex === questions.length - 1}
                         >
                             <ArrowRight />
                         </Button>
