@@ -53,7 +53,7 @@ const useQuiz = (game, pausePoints = []) => {
             setQuestions(savegame.questions);
             setGameState(savegame.gameState);
             updateHash(savegame.gameState.currentQuestionIndex);
-            toast('Savegame found', { description: `continuing at question ${savegame.gameState.currentQuestionIndex + 1}` })
+            toast('Savegame found', { description: `continuing at round ${savegame.gameState.currentQuestionIndex + 1}`, autoClose: 1000 })
         } else {
             fetchGameData();
         }
@@ -130,16 +130,34 @@ const useQuiz = (game, pausePoints = []) => {
         setLoading(true);
         resetState();
         try {
+            // Fetch questions mapped to the game
             const { data, error } = await supabase
-                .from(game.slug)
-                .select('question, solution, order')
-                .order('order', { ascending: true });
+                .from('game_question_mapping')
+                .select(`
+            order_number,
+            questions (
+                question, 
+                solution,
+                solution_detail,
+                question_type
+            )
+        `)
+                .eq('game_id', game.id)
+                .order('order_number', { ascending: true });
+
+            console.log(data)
 
             if (error) {
                 throw error;
             }
 
-            setQuestions(data);
+            // Transform data to get a clean list of questions
+            const questions = data.map(item => ({
+                ...item.questions,
+                order: item.order_number
+            }));
+
+            setQuestions(questions);
             updateHash(1); // Update hash to the first question
         } catch (err) {
             console.error('Error fetching game content:', err);

@@ -5,8 +5,6 @@ import { useGames } from '@/providers/games-provider';
 import StartScreen from '@/components/StartScreen';
 import Jeopardy from '@/components/Jeopardy/Jeopardy';
 import Quiz from '@/components/Quiz/Quiz';
-import AudioQuiz from '@/components/Audio/AudioQuiz';
-import Slideshow from '@/components/Slideshow/Slideshow';
 
 function GameDetail() {
 
@@ -26,18 +24,11 @@ function GameDetail() {
 
 const GameBoard = ({ game }) => {
 
-    switch (game?.type) {
-        case "jeopardy":
-            return <Jeopardy game={game} />;
-        case "quiz":
-            return <Quiz game={game} />;
-        case "audio":
-            return <AudioQuiz game={game} />;
-        case "slideshow":
-            return <Slideshow game={game} />;
-        default:
-            return <div>Game Board here</div>;
+    if (game?.type === 'jeopardy') {
+        return <Jeopardy game={game} />;
     }
+
+    return <Quiz game={game} />;
 };
 
 export default GameDetail;

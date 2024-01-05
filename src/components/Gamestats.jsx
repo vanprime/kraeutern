@@ -39,13 +39,12 @@ function GameStats() {
     }, [gameRoom])
 
     return (
-        <div className='flex flex-wrap gap-4 justify-start'>
+        <div className='flex flex-wrap gap-6 justify-start'>
             {Object.entries(prettyRoom).map(([key, value]) => (
                 <div
                     key={key}
-                    className="p-2"
                 >
-                    <p className="text-sm text-muted-foreground">{prettyStats(key)}</p>
+                    <p className="text-sm text-muted-foreground font-light">{prettyStats(key)}</p>
                     <motion.p
                         key={`${key}-${value}`}
                         initial={{ opacity: 0 }}

@@ -14,7 +14,9 @@ const Navlayout = () => {
                 <main className='flex flex-1 flex-col pb-6 px-6'>
                     {loading ? (
                         <Loader2 className='animate-spin m-auto' />
-                    ) : <Outlet />}
+                    ) : (
+                        <Outlet />
+                    )}
                 </main>
             </div>
             <Footer />

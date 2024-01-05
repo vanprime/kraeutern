@@ -6,9 +6,10 @@ import App from './App.jsx'
 import './index.css'
 import Home from "@/pages/Home.jsx";
 import "@fontsource/rubik"; // Defaults to weight 400
+import "@fontsource/rubik/300.css"
+import "@fontsource/rubik/500.css"
 import "@fontsource/rubik/600.css"
 import "@fontsource/rubik/800.css"
-import GamesList from "./components/GamesList.jsx";
 import GameDetail from "./pages/GameDetail.jsx";
 import Navlayout from "./layouts/Navlayout.jsx";
 import { GamesProvider } from "@/providers/games-provider.jsx";
