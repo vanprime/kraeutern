@@ -2,12 +2,13 @@ import { useGames } from '@/providers/games-provider';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+const cmsPath = import.meta.env.VITE_CMS_PATH
 
 
 const GameImage = ({ slug, name }) => {
+    console.log(cmsPath)
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const cmsPath = process.env.VITE_CMS_PATH;
 
     useEffect(() => {
         const img = new Image();
