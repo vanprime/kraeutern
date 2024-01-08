@@ -14,7 +14,7 @@ export const GamesProvider = ({ children }) => {
             setLoading(true);
             try {
                 const { data, error } = await supabase
-                    .from('games')
+                    .from('games_list')
                     .select('*');
 
                 if (error) {

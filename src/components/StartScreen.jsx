@@ -1,10 +1,10 @@
 // StartScreen.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import SpellingText from '@/components/SpellingText';
-import { GameImage } from './GamesList';
+import { GameImage } from '@/components/GamesList';
+import { useGames } from '@/providers/games-provider';
+import { Globe, Monitor } from 'lucide-react';
 
 const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -12,19 +12,30 @@ const fadeInUp = {
     exit: { opacity: 0, y: -20 }
 };
 
-const StartScreen = ({ game }) => {
+const StartScreen = () => {
+
+    const { games } = useGames();
+    const { gameSlug } = useParams();
+    const game = games.find(game => game?.slug === gameSlug);
+
     const navigate = useNavigate();
-    const savedGame = localStorage.getItem(game.slug); // Check for saved game
+    const savedGame = localStorage.getItem(game?.slug); // Check for saved game
 
     const handleNewGame = () => {
         localStorage.removeItem(game.slug); // Clear saved game data
-        navigate(`/games/${game.slug}/play`);
+        navigate(`/games/${game.slug}/play-locally`);
     };
 
     const handleContinueGame = () => {
-        navigate(`/games/${game.slug}/play`);
+        navigate(`/games/${game.slug}/play-locally`);
     };
 
+    const handleHostOnline = () => {
+        navigate(`/host/${game.id}`);
+    }
+
+
+    if (!game) return null;
 
     return (
         <div className='flex flex-wrap gap-6 justify-center m-auto rounded-xl text-center'>
@@ -45,9 +56,12 @@ const StartScreen = ({ game }) => {
                 >
                     {game.description && <p className='text-muted-foreground'>{game.description}</p>}
                 </motion.div>
-                <div className='flex justify-center mt-9 space-x-4'>
-                    <Button onClick={handleNewGame}>New Game</Button>
-                    {savedGame && <Button onClick={handleContinueGame}>Continue Game</Button>}
+                <div className='flex justify-center mt-9 gap-4'>
+                    <div className='flex flex-col gap-4'>
+                        <Button onClick={handleNewGame}>Play locally<Monitor className='ml-[1ch]' /></Button>
+                        {savedGame && <Button variant="secondary" onClick={handleContinueGame}>Continue local Game</Button>}
+                    </div>
+                    <Button onClick={handleHostOnline}>Host online<Globe className='ml-[1ch]' /></Button>
                 </div>
             </div>
         </div>

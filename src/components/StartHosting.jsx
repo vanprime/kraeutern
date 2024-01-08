@@ -38,7 +38,7 @@ function StartHosting({ hideupperPart = false }) {
                         <div className="grid gap-4">
                             <p className="text-slate-500 ">Du hostest ein Game mit der ID: <br /> <span className="text-foreground">{gameRoom.room_id}</span></p>
                             <Button className="w-full" asChild>
-                                <Link to="/host">
+                                <Link to="/dashboard">
                                     Zum Game Dashboard <ArrowBigRight className="ml-[1ch] h-4 w-4" />
                                 </Link>
                             </Button>

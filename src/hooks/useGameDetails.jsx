@@ -18,7 +18,7 @@ export const useGameDetails = (gameId) => {
             if (gameId) {
                 try {
                     const { data, error } = await supabase
-                        .from('games')
+                        .from('games_list')
                         .select('*')
                         .eq('id', gameId);
 

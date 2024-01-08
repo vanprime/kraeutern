@@ -11,6 +11,8 @@ const QuestionDisplay = React.lazy(() => import('./QuestionDisplay'));
 
 const Quiz = ({ game }) => {
 
+    // TODO: make all the state server side.
+
     const pausePoints = [26]; // Define your pause points
     const {
         questions,

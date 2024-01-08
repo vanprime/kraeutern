@@ -13,7 +13,7 @@ const Navigation = () => {
         },
         {
             name: "Dashboard",
-            href: "/host",
+            href: "/dashboard",
             icon: <LayoutDashboard className="mr-[1ch] h-4 w-4" />
         },
         {

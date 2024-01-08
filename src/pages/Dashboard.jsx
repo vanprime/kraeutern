@@ -5,7 +5,7 @@ import { useSupscription } from "@/hooks/useSubscription";
 import { useGamestateContext } from "@/providers/gamestate-provider";
 
 
-function Host() {
+function Dashboard() {
 
     const { loading, gameRoom } = useGamestateContext();
     useSupscription();
@@ -36,4 +36,4 @@ function Host() {
     );
 }
 
-export default Host;
+export default Dashboard;

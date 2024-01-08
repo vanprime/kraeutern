@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner"
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -10,7 +10,6 @@ import "@fontsource/rubik/300.css"
 import "@fontsource/rubik/500.css"
 import "@fontsource/rubik/600.css"
 import "@fontsource/rubik/800.css"
-import GameDetail from "./pages/GameDetail.jsx";
 import Navlayout from "./layouts/Navlayout.jsx";
 import { GamesProvider } from "@/providers/games-provider.jsx";
 import Teamselect from "@/pages/Teamselect.jsx";
@@ -21,9 +20,12 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import NotFoundPage from "@/pages/NotFoundPage.jsx";
 import AuthPage from "@/pages/Auth.jsx";
 import { AuthProvider } from "@/providers/auth-provider.jsx";
-import Host from "@/pages/Host.jsx";
 import Blank from "@/pages/Blank.jsx";
 import Homelayout from "@/layouts/Homelayout.jsx";
+import StartScreen from "@/components/StartScreen.jsx";
+import GameBoard from "@/components/GameBoard.jsx";
+import Dashboard from "@/pages/Dashboard.jsx";
+import HostGamePage from "@/pages/HostGamePage.jsx";
 
 export const baseUrl = '/kraeutern/'
 
@@ -61,12 +63,12 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: "host",
+        path: "dashboard",
         element: <Navlayout />,
         children: [
           {
             index: true,
-            element: <Host />,
+            element: <Dashboard />,
           },
         ]
       },
@@ -75,8 +77,22 @@ const router = createBrowserRouter([
         element: <Navlayout />,
         children: [
           {
-            path: ":gameSlug/*",
-            element: <GameDetail />,
+            path: ":gameSlug",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <StartScreen /> },
+              { path: 'play-locally', element: <GameBoard /> },
+            ],
+          },
+        ]
+      },
+      {
+        path: "host",
+        element: <Navlayout />,
+        children: [
+          {
+            path: ":gameId",
+            element: <HostGamePage />
           },
         ]
       },
