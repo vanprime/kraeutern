@@ -50,16 +50,10 @@ const useGameState = () => {
                 updated_at,
                 team_id,
                 buzzed,
-                is_local_game,
                 current_game_id,
-                current_question_id,
-                games_list:current_game_id (name),
-                questions:current_question_id (question),
-                game_question_mapping:current_question_id (*)
+                current_question_id
             `)
                 .eq('creator_id', session.user.id);
-
-            console.log(data);
 
             if (error) {
                 console.error('Error fetching game room:', error);
@@ -70,12 +64,7 @@ const useGameState = () => {
             if (data.length === 0) {
                 setGameRoom(null);
             } else {
-                const gameRoom = data[0];
-                gameRoom.game = gameRoom.games_list ? gameRoom.games_list : {};
-                gameRoom.question = gameRoom.questions ? gameRoom.questions : {};
-                gameRoom.orderNumber = gameRoom.game_question_mapping ? gameRoom.game_question_mapping.order_number : null;
-
-                setGameRoom(gameRoom);
+                setGameRoom(data[0]);
                 setOvershooterVisible(gameRoom.buzzed);
                 setActiveTeamId(gameRoom.team_id);
             }

@@ -27,6 +27,8 @@ function GameStats() {
         created_by: gameRoom.created_by,
         created_at: prettyDate(gameRoom.created_at, true),
         last_update: prettyDate(gameRoom.updated_at, false, true),
+        current_game_ID: gameRoom.current_game_id ? gameRoom.current_game_id : "No active game",
+        current_question_ID: gameRoom.current_question_id ? gameRoom.current_question_id : "No active question",
         buzzered_by: gameRoom.team_id === 0 ? "Nobody" : `Team ${gameRoom.team_id}`,
         buzzer_active: gameRoom.buzzed ? "Yes" : "No",
         amount_buzzered: gameRoom.amount_buzzered,

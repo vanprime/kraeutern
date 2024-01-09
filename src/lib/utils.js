@@ -28,5 +28,6 @@ export function prettyDate(dateString, dateOnly = false, includeSeconds = false)
 }
 
 export function prettyKey(key) {
-  return key.replace("_", " ").replace(/\w\S*/, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+  let result = key.replace(/_/g, " ");
+  return result.charAt(0).toUpperCase() + result.slice(1).toLowerCase();
 };
